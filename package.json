@@ -1,0 +1,52 @@
+{
+  "name": "ipmailer",
+  "version": "1.0.0",
+  "description": "A SaaS platform that enables organizations to manage email communications through SMTP IP rotation, featuring user management, subscriber tracking, rich text email customization, and detailed analytics for improved deliverability and engagement.",
+  "main": "/server/src/index.ts",
+  "scripts": {
+    "test": "nodemon --watch ./server/src --exec ts-node ./server/src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Benup211/IPMailer.git"
+  },
+  "keywords": [
+    "mail",
+    "nodejs",
+    "smtp",
+    "ip",
+    "rotation"
+  ],
+  "author": "benup ghimire",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Benup211/IPMailer/issues"
+  },
+  "homepage": "https://github.com/Benup211/IPMailer#readme",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.1",
+    "@types/nodemailer": "^6.4.15",
+    "@types/validator": "^13.12.1",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.19.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-validator": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.14",
+    "prisma": "^5.19.0",
+    "typescript": "^5.5.4"
+  }
+}
