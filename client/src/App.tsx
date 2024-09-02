@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "./components/sidebar";
-import { OverviewPage, SignInPage,SignUpPage } from "./pages";
+import { OverviewPage, SignInPage,SignUpPage,ForgetPasswordPage,TwoFAVerificationPage } from "./pages";
 function App() {
     const isAuthenticated = false;
     return (
@@ -22,6 +22,8 @@ function App() {
                     <Routes>
                         <Route path="/login" element={<SignInPage />} />
                         <Route path="/signup" element={<SignUpPage />} />
+                        <Route path="/forgot-password" element={<ForgetPasswordPage />} />
+                        <Route path="/two-fa-verification" element={<TwoFAVerificationPage/>} />
                     </Routes>
                 </>
             )}
