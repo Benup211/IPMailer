@@ -4,7 +4,7 @@
   "description": "A SaaS platform that enables organizations to manage email communications through SMTP IP rotation, featuring user management, subscriber tracking, rich text email customization, and detailed analytics for improved deliverability and engagement.",
   "main": "/server/src/index.ts",
   "scripts": {
-    "test": "nodemon --watch ./server/src --exec ts-node ./server/src/index.ts"
+    "dev": "nodemon --watch ./server/src --exec ts-node ./server/src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -26,8 +26,10 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^22.5.1",
     "@types/nodemailer": "^6.4.15",
     "@types/validator": "^13.12.1",
