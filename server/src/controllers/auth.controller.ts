@@ -1,15 +1,13 @@
 import { Request, Response, NextFunction } from "express";
-import prisma from "../models/prisma.model";
-import { UserService } from "../services/user.service";
 import { AuthRepository } from "../repository/auth.repository";
-
+import { ResponseService,JwtService,UserService } from "../services";
 export class AuthController {
     static async registerUser(req: Request, res: Response, next: NextFunction) {
         try {
             const { email, password, organization } = req.body;
             const user = await AuthRepository.findUserByEmail(email);
             if (user) {
-                return res.status(400).json({ message: "User already exists" });
+                next(ResponseService.CreateErrorResponse("User already exists", 400));
             }
             const hashedPassword = await UserService.hashPassword(password);
             const newUser = await AuthRepository.createUser(email, hashedPassword, organization);
@@ -23,14 +21,14 @@ export class AuthController {
             const { email, password } = req.body;
             const user = await AuthRepository.findUserByEmail(email);
             if (!user) {
-                return res.status(400).json({ message: "User not found" });
+                next(ResponseService.CreateErrorResponse("User not found", 404));
             }
-            const isPasswordValid = await UserService.comparePassword(password, user.password);
+            const isPasswordValid = user ? await UserService.comparePassword(password, user.password) : false;
             if (!isPasswordValid) {
-                return res.status(400).json({ message: "Invalid password" });
+                next(ResponseService.CreateErrorResponse("Incorrect credentials", 400));
             }
-            if(!user.active) {
-                return res.status(400).json({ message: "User is not active" });
+            if(user && !user.active) {
+                next(ResponseService.CreateErrorResponse("Email is not verified,Check your email for verification", 400));
             }
             return res.status(200).json(user);
         } catch (error) {

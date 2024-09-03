@@ -3,7 +3,9 @@ import { body } from "express-validator";
 export class AuthValidator {
     static registerUser() {
         return [
-            body("email").isEmail().withMessage("Invalid email"),
+            body("email")
+            .notEmpty()
+            .withMessage("Email is required").isEmail().withMessage("Invalid Email Address"),
             body("password")
                 .notEmpty()
                 .withMessage("Password is required")
