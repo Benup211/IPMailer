@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "./components/sidebar";
+import {Toaster} from 'react-hot-toast';
 import { OverviewPage, SignInPage,SignUpPage,ForgetPasswordPage,TwoFAVerificationPage } from "./pages";
 function App() {
     const isAuthenticated = false;
@@ -27,6 +28,7 @@ function App() {
                     </Routes>
                 </>
             )}
+            <Toaster/>
         </div>
     );
 }

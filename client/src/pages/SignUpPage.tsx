@@ -1,22 +1,32 @@
-import { FC, ReactElement,useState } from "react";
-import Logo from '../assets/ipmailer-favicon-color.png';
-import {Link} from 'react-router-dom';
+import { FC, ReactElement, useState } from "react";
+import Logo from "../assets/ipmailer-favicon-color.png";
+import { Link } from "react-router-dom";
+import { AuthState } from "../state/AuthState";
+import { Loader } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const SignUpPage: FC = (): ReactElement => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [organizationName, setOrganizationName] = useState("");
-    const handleSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const { isLoading, registerUser } = AuthState();
+    const navigate=useNavigate();
+    const handleSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(email,password,confirmPassword,organizationName);
-        alert("Sign Up");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
-        setOrganizationName("");
-        return;
-    }
+        try {
+            console.log(email, password, confirmPassword, organizationName);
+            await registerUser(
+                email,
+                password,
+                confirmPassword,
+                organizationName
+            );
+            navigate('/login');
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     return (
         <>
@@ -27,6 +37,7 @@ export const SignUpPage: FC = (): ReactElement => {
                         src={Logo}
                         className="mx-auto h-16 w-16 md:h-20 md:w-20"
                     />
+                    <h1 className="text-center text-2xl font-bold leading-9 tracking-tight text-white-900">IPMailer</h1>
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white-900">
                         Sign up for your account
                     </h2>
@@ -48,6 +59,7 @@ export const SignUpPage: FC = (): ReactElement => {
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    disabled={isLoading}
                                     className="block w-full rounded-md border-0 p-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -67,13 +79,16 @@ export const SignUpPage: FC = (): ReactElement => {
                                     type="text"
                                     required
                                     value={organizationName}
-                                    onChange={(e) => setOrganizationName(e.target.value)}
+                                    onChange={(e) =>
+                                        setOrganizationName(e.target.value)
+                                    }
+                                    disabled={isLoading}
                                     placeholder="Your organization name"
                                     className="block w-full rounded-md border-0 p-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
                         </div>
-                        
+
                         <div>
                             <label
                                 htmlFor="password"
@@ -88,7 +103,10 @@ export const SignUpPage: FC = (): ReactElement => {
                                     type="password"
                                     required
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
+                                    disabled={isLoading}
                                     className="block w-full rounded-md border-0 p-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -107,7 +125,10 @@ export const SignUpPage: FC = (): ReactElement => {
                                     type="password"
                                     required
                                     value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    onChange={(e) =>
+                                        setConfirmPassword(e.target.value)
+                                    }
+                                    disabled={isLoading}
                                     className="block w-full rounded-md border-0 p-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -118,13 +139,16 @@ export const SignUpPage: FC = (): ReactElement => {
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                Sign up
+                                {isLoading ? (
+                                    <Loader className="w-6 h-6 animate-spin  mx-auto" />
+                                ) : (
+                                    "Sign up"
+                                )}
                             </button>
                         </div>
                     </form>
-
                     <p className="mt-10 text-center text-sm text-gray-500">
-                    Already have an account ?{" "}
+                        Already have an account ?{" "}
                         <Link
                             to="/login"
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"

@@ -1,19 +1,24 @@
 import { FC, ReactElement, useState } from "react";
 import Logo from "../assets/ipmailer-favicon-color.png";
 import { Link } from "react-router-dom";
+import { AuthState } from "../state/AuthState";
+import { Loader } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const SignInPage: FC = (): ReactElement => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const handleSignInSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const {isLoading,loginUser}=AuthState();
+    const navigate=useNavigate();
+    const handleSignInSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(email, password);
-        alert("Sign In");
-        setEmail("");
-        setPassword("");
-        return;
+        try{
+            await loginUser(email,password);
+            navigate('/two-fa-verification');
+        }catch(err){
+            console.log(err);
+        }
     };
-    const isError = true;
     return (
         <>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -46,6 +51,7 @@ export const SignInPage: FC = (): ReactElement => {
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    disabled={isLoading}
                                     autoComplete="email"
                                     className="block w-full rounded-md border-0 p-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
@@ -79,22 +85,18 @@ export const SignInPage: FC = (): ReactElement => {
                                     onChange={(e) =>
                                         setPassword(e.target.value)
                                     }
+                                    disabled={isLoading}
                                     autoComplete="current-password"
                                     className="block w-full rounded-md border-0 p-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
                         </div>
-                        {isError && (
-                            <p className="text-red-600 text-sm text-center">
-                                Incorrect Email or Password
-                            </p>
-                        )}
                         <div>
                             <button
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                Sign in
+                                {isLoading? <Loader className="w-6 h-6 animate-spin  mx-auto" />:"Sign in"}
                             </button>
                         </div>
                     </form>
