@@ -9,7 +9,8 @@ class AuthRoute{
         this.postRoutes();
     }
     getRoutes(){
-
+        this.router.get('/logout',AuthController.logoutUser);
+        this.router.get('/getUser',GlobalMiddleware.CheckAuth,AuthController.getUser);
     }
     postRoutes(){
         this.router.post('/register',AuthValidator.registerUser(),GlobalMiddleware.CheckValidationResult,AuthController.registerUser);

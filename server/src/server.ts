@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import cors from 'cors';
 import { Request, Response,NextFunction } from "express";
 import AuthRoute from './routes/auth.route';
+import tokenRoute from "./routes/token.route";
 
 export class MainServer {
     public app: express.Application = express();
@@ -23,6 +24,7 @@ export class MainServer {
 
     setRoutes() {
         this.app.use("/api/auth", AuthRoute);
+        this.app.use("/api/token", tokenRoute);
     }
     handle404Error() {
 		this.app.use((req: Request, res: Response) => {
