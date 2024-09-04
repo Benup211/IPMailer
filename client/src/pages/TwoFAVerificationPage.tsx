@@ -1,16 +1,27 @@
 import { FC, ReactElement, useState } from "react";
 import Logo from "../assets/ipmailer-favicon-color.png";
 import { Link } from "react-router-dom";
+import { AuthState } from "../state/AuthState";
+import { TokenState } from "../state/TokenState";
+import { useNavigate } from "react-router-dom";
+import { Loader } from "lucide-react";
 export const TwoFAVerificationPage: FC = (): ReactElement => {
     const [code, setCode] = useState("");
-    const handleTwoFAVerificationSubmit = (
+    const {setAuthentication,user}=AuthState();
+    const {isLoading,verifyTwoFactor}=TokenState();
+    const navigate=useNavigate();
+    const handleTwoFAVerificationSubmit = async(
         e: React.FormEvent<HTMLFormElement>
     ) => {
         e.preventDefault();
-        console.log(code);
-        alert("2FA Verification");
-        setCode("");
-        return;
+        try{
+            await verifyTwoFactor(code,user.id);
+            setAuthentication(true);
+            navigate('/');
+        }catch(err){
+            console.log(err);
+        }
+        
     };
     return (
         <>
@@ -49,6 +60,7 @@ export const TwoFAVerificationPage: FC = (): ReactElement => {
                                     required
                                     value={code}
                                     onChange={(e) => setCode(e.target.value)}
+                                    disabled={isLoading}
                                     className="block w-full rounded-md border-0 p-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -58,7 +70,7 @@ export const TwoFAVerificationPage: FC = (): ReactElement => {
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                Verify
+                                {isLoading? <Loader className="w-6 h-6 animate-spin  mx-auto" />:"Verify"}
                             </button>
                         </div>
                     </form>
