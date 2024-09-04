@@ -31,12 +31,11 @@ enum TokenType {
   TWO_FACTOR
 }
 model Token {
-  id           Int      @id @default(autoincrement())
+  id           String     @id @default(uuid())
   userId       Int
   type         TokenType
-  token        String
+  token        Int
   expiry       DateTime
-
   user         User     @relation(fields: [userId], references: [id])
 }
 

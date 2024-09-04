@@ -10,11 +10,16 @@ export const AuthState=create<IAuthState>((set)=>({
         id:'',
         email:'',
         organization:'',
-        active:false
+        active:false,
+        createdAt:'',
+        updatedAt:''
     },
     isCheckingAuth:false,
     isLoading:false,
     isAuthenticated:false,
+    setAuthentication:async (isAuthenticated:boolean)=>{
+        set({isAuthenticated:isAuthenticated});
+    },
     registerUser:async (email:string,password:string,confirmPassword:string,organization:string)=>{
         set({isLoading:true});
         try{
@@ -41,6 +46,32 @@ export const AuthState=create<IAuthState>((set)=>({
             const {response}=err as AxiosError<IErrorResponse>;
             set({isLoading:false});
             toast.error(response?.data.errorMessage as string);
+            throw Error(response?.data.errorMessage);
+        }
+    },
+    logoutUser:async ()=>{
+        set({isLoading:true});
+        try{
+            const response=await axios.get(`${API_URL}/auth/logout`);
+            set({isLoading:false,isAuthenticated:false});
+            toast.success(response.data.message);
+            return response;
+        }catch(err){
+            const {response}=err as AxiosError<IErrorResponse>;
+            set({isLoading:false});
+            toast.error(response?.data.errorMessage as string);
+            throw Error(response?.data.errorMessage);
+        }
+    },
+    checkAuth:async ()=>{
+        set({isCheckingAuth:true});
+        try{
+            const response=await axios.get(`${API_URL}/auth/getUser`);
+            set({isCheckingAuth:false,isAuthenticated:true,user:response.data});
+            return response;
+        }catch(err){
+            const {response}=err as AxiosError<IErrorResponse>;
+            set({isCheckingAuth:false,isAuthenticated:false});
             throw Error(response?.data.errorMessage);
         }
     }
