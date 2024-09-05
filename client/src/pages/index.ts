@@ -5,3 +5,5 @@ export * from './ForgetPasswordPage';
 export * from './TwoFAVerificationPage';
 export * from './VerificationPage';
 export * from './LogoutPage';
+export * from './EmailSubscribersPage';
+export * from './AddEmailPage';
