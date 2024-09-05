@@ -14,9 +14,9 @@ export const AuthState=create<IAuthState>((set)=>({
         createdAt:'',
         updatedAt:''
     },
+    isAuthenticated:false,
     isCheckingAuth:false,
     isLoading:false,
-    isAuthenticated:false,
     setAuthentication:async (isAuthenticated:boolean)=>{
         set({isAuthenticated:isAuthenticated});
     },
@@ -67,11 +67,11 @@ export const AuthState=create<IAuthState>((set)=>({
         set({isCheckingAuth:true});
         try{
             const response=await axios.get(`${API_URL}/auth/getUser`);
-            set({isCheckingAuth:false,isAuthenticated:true,user:response.data});
+            set({isAuthenticated:true,isCheckingAuth:false,user:response.data});
             return response;
         }catch(err){
             const {response}=err as AxiosError<IErrorResponse>;
-            set({isCheckingAuth:false,isAuthenticated:false});
+            set({isAuthenticated:false,isCheckingAuth:false});
             throw Error(response?.data.errorMessage);
         }
     }

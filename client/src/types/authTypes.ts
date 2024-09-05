@@ -15,5 +15,5 @@ export interface IAuthState{
     registerUser:Function;
     loginUser:Function;
     logoutUser:Function;
-    checkAuth:Function;
+    checkAuth:()=>Promise<any>;
 }
