@@ -27,4 +27,12 @@ export class SubscriberRepository {
             },
         });
     }
+    static async deleteSubscriber(id: string | number, userID: string | number) {
+        return await prisma.subscriber.delete({
+            where: {
+                id: id as number,
+                userId: userID as number,
+            },
+        });
+    }
 }

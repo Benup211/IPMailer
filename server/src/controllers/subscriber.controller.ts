@@ -41,4 +41,18 @@ export class SubscriberController{
             next(error);
         }
     }
+    static async deleteSubscriber(req:Request, res:Response,next:NextFunction){
+        try{
+            const {id,userID} = req.body;
+            const deleteSubscriber = await SubscriberRepository.deleteSubscriber(id,userID);
+            if(deleteSubscriber){
+                res.status(200).json({message:"Subscriber deleted successfully"});
+            }
+            else{
+                next(ResponseService.CreateErrorResponse("Subscriber not found",404));
+            }
+        }catch(error){
+            next(error);
+        }
+    }
 }

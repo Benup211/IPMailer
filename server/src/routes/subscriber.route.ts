@@ -14,6 +14,7 @@ class SubscriberRoute{
     }
     postRoutes(){
         this.router.post('/add-subscriber',SubscriberValidator.addSubscriber(),GlobalMiddleware.CheckValidationResult,SubscriberController.addSubscriber);
+        this.router.post('/delete-subscriber',SubscriberValidator.deleteSubscriber(),GlobalMiddleware.CheckValidationResult,GlobalMiddleware.CheckAuth,SubscriberController.deleteSubscriber);
     }
 }
 
