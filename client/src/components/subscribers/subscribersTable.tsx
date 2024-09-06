@@ -1,26 +1,52 @@
 import { motion } from "framer-motion";
 import { Search, Trash2, CirclePlus } from "lucide-react";
-import { useState } from "react";
-import {FC,ReactElement} from 'react';
+import { useState, useEffect } from "react";
+import { FC, ReactElement } from "react";
 import { ISubscribers } from "../../types";
 import { useNavigate } from "react-router-dom";
-export const SubscribersTable:FC<ISubscribers> = (props):ReactElement => {
-    const {subscribers}=props;
+import { useSubscriberStore } from "../../state/SubscriberState";
+import { AuthState } from "../../state/AuthState";
+
+export const SubscribersTable: FC<ISubscribers> = (props): ReactElement => {
+    const { subscribers } = props;
+    const { deleteSubscriber } = useSubscriberStore();
+    const { user } = AuthState();
+    const navigate = useNavigate();
+
     const [searchTerm, setSearchTerm] = useState("");
-    const [filterEmail, setFilterEmail] = useState(subscribers);
-    const navigate=useNavigate();
+    const [filteredSubscribers, setFilteredSubscribers] = useState(subscribers);
+
+    useEffect(() => {
+        setFilteredSubscribers(subscribers);
+    }, [subscribers]);
+
     const handleSearch = (e: { target: { value: string } }) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
         const filtered = subscribers.filter((subscriber) =>
             subscriber.email.toLowerCase().includes(term)
         );
-
-        setFilterEmail(filtered);
+        setFilteredSubscribers(filtered);
     };
-    const addEmail=()=>{
-        navigate('/add-email');
-    }
+
+    const addEmail = () => {
+        navigate("/add-email");
+    };
+
+    const handleDeleteSubscriber = async (
+        id: string | number,
+        userID: string | number
+    ) => {
+        try {
+            await deleteSubscriber(id, userID);
+            setFilteredSubscribers((prev) =>
+                prev.filter((subscriber) => subscriber.id !== id)
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <motion.div
             className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700 mb-8"
@@ -73,14 +99,14 @@ export const SubscribersTable:FC<ISubscribers> = (props):ReactElement => {
                     </thead>
 
                     <tbody className="divide-y divide-gray-700">
-                        {filterEmail.length === 0 ? (
+                        {filteredSubscribers.length === 0 ? (
                             <tr className="text-sm p-4 font-bold">
                                 <td className="p-4" colSpan={3}>
                                     No Subscribers Found
                                 </td>
                             </tr>
                         ) : (
-                            filterEmail.map((emails, index) => (
+                            filteredSubscribers.map((emailData, index) => (
                                 <motion.tr
                                     key={index}
                                     initial={{ opacity: 0 }}
@@ -89,18 +115,25 @@ export const SubscribersTable:FC<ISubscribers> = (props):ReactElement => {
                                 >
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100 flex gap-2 items-center">
                                         <img
-                                            src={`https://avatar.iran.liara.run/public/boy?username=${emails.email}`}
-                                            alt={`${emails.email}`}
+                                            src={`https://avatar.iran.liara.run/public/boy?username=${emailData.email.toString()}`}
+                                            alt={emailData.email.toString()}
                                             className="size-10 rounded-full"
                                         />
-                                        {emails.email}
-                                    </td>
-
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                                        {emails.createdAt.toString()}
+                                        {emailData.email}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                                        <button className="text-red-400 hover:text-red-300">
+                                        {new Date(emailData.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                                        <button
+                                            className="text-red-400 hover:text-red-300"
+                                            onClick={() =>
+                                                handleDeleteSubscriber(
+                                                    emailData.id,
+                                                    user.id
+                                                )
+                                            }
+                                        >
                                             <Trash2 size={18} />
                                         </button>
                                     </td>

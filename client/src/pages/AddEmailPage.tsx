@@ -2,12 +2,28 @@ import { Header } from "../components/common/header";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useSubscriberStore } from "../state/SubscriberState";
+import { Loader } from "lucide-react";
+import { AuthState } from "../state/AuthState";
+import { useNavigate } from "react-router-dom";
 export const AddEmailPage = () => {
     const [email, setEmail] = useState("");
+    const {isAddingSubscriber,addSubscriber}=useSubscriberStore();
+    const {user}=AuthState();
+    const navigate=useNavigate();
     const handleAddEmailSubmit = async (
         e: React.FormEvent<HTMLFormElement>
     ) => {
         e.preventDefault();
+        try {
+            await addSubscriber(email,user?.id as string);
+            setEmail("");
+            navigate("/email-subscribers");
+            
+        } catch (error) {
+            console.log(error);
+        }
+
     };
     return (
         <div className="flex-1 overflow-auto relative z-10">
@@ -47,8 +63,7 @@ export const AddEmailPage = () => {
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                {/* {isLoading? <Loader className="w-6 h-6 animate-spin  mx-auto" />:"Sign in"} */}
-                                Add Email
+                                {isAddingSubscriber? <Loader className="w-6 h-6 animate-spin  mx-auto" />:"Add Email"}
                             </button>
                         </div>
                     </div>

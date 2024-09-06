@@ -7,7 +7,7 @@ export const EmailSubscribersPage = () => {
 	const {isGettingSubscribers,getSubscribers,subscribers}=useSubscriberStore();
 	useEffect(()=>{
 		getSubscribers();
-	},[]);
+	},[getSubscribers]);
 	if(isGettingSubscribers){
 		return (
 			<div className="flex-1 flex items-center justify-center">
