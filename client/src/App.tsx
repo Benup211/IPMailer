@@ -10,7 +10,9 @@ import {
     VerificationPage,
     LogoutPage,
     EmailSubscribersPage,
-    AddEmailPage
+    AddEmailPage,
+    SendMailPage,
+    MakeMailPage
 } from "./pages";
 import { AuthState } from "./state/AuthState";
 import { Navigate } from "react-router-dom";
@@ -117,6 +119,16 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <AddEmailPage />
+              </ProtectedRoute>
+            }/>
+            <Route path="/send-mail"  element={
+              <ProtectedRoute>
+                <SendMailPage />
+              </ProtectedRoute>
+            }/>
+            <Route path='/add-mail' element={
+              <ProtectedRoute>
+                <MakeMailPage/>
               </ProtectedRoute>
             }/>
           <Route
