@@ -1,6 +1,8 @@
 import {FC,ReactElement} from 'react';
 import { Header } from '../components/common/header';
 import {motion} from 'framer-motion';
+import {  User } from 'lucide-react';
+import { StatCard } from '../components/common/statcard';
 export const OverviewPage: FC = (): ReactElement => {
     return (
         <div className="flex-1 overflow-auto relative z-10">
@@ -12,7 +14,7 @@ export const OverviewPage: FC = (): ReactElement => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    {/* card goes here */}
+                    <StatCard name='Subscribers' icon={User} value='1' color='#23aefc'/>
                 </motion.div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* chart goes here */}

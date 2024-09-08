@@ -7,3 +7,5 @@ export * from './VerificationPage';
 export * from './LogoutPage';
 export * from './EmailSubscribersPage';
 export * from './AddEmailPage';
+export * from './SendMailPage';
+export * from './MakeMailPage';
