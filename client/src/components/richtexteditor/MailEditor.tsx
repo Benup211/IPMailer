@@ -1,20 +1,19 @@
-import { useState } from 'react'
-import { createEditor, Descendant } from 'slate'
-import { Slate, Editable, withReact } from 'slate-react'
+import { MDXEditor } from "@mdxeditor/editor";
+import { headingsPlugin,listsPlugin,quotePlugin,thematicBreakPlugin,markdownShortcutPlugin } from "@mdxeditor/editor";
 
-const initialValue: Descendant[] = [
-  {
-    type: 'paragraph',
-    children: [{ text: 'A line of text in a paragraph.' }],
-  },
-]
-
+import "@mdxeditor/editor/style.css";
 export const MailEditor = () => {
-  const [editor] = useState(() => withReact(createEditor()))
-
-  return (
-    <Slate editor={editor} initialValue={initialValue}>
-      <Editable />
-    </Slate>
-  )
-}
+    return (
+        <MDXEditor
+            markdown="# Hello world"
+            plugins={[
+                headingsPlugin(),
+                listsPlugin(),
+                quotePlugin(),
+                thematicBreakPlugin(),
+                markdownShortcutPlugin(),
+            ]}
+            className="block w-full rounded-md border-0 p-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 md:min-w-96 min-w-64 bg-slate-50 mb-2"
+        />
+    );
+};

@@ -1,18 +1,47 @@
 import { motion } from "framer-motion";
 import { Header } from "../components/common/header";
 import { Link } from "react-router-dom";
-import { Loader } from "lucide-react";
-import {MailEditor} from '../components/richtexteditor/MailEditor';
+import { Loader, Send,SquarePen } from "lucide-react";
+import { useState } from "react";
+import { useMailStore } from "../state/MailState";
+import { useNavigate } from "react-router-dom";
+import { AuthState } from "../state/AuthState";
 export const MakeMailPage = () => {
-    const handleMailSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        return e.preventDefault();
+    const {increaseStat}=AuthState();
+    const {isAddingMail,addMail,addDraftMail,isAddingDraftMail,valueFromDraftMail}=useMailStore();
+    const [mailSubject, setMailSubject] = useState(valueFromDraftMail.subject);
+    const [mailBody, setMailBody] = useState(valueFromDraftMail.message);
+    const navigate=useNavigate();
+    const handleMailSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    };
+    const handleSendMail=async()=>{
+        try {
+            await addMail(mailSubject,mailBody);
+            setMailSubject("");
+            setMailBody("");
+            increaseStat('mails');
+            navigate("/send-mail");
+        } catch (error) {
+            console.log(error);
+        }
     }
-    const isSendingMail = false;
+    const handleDraftMail=async()=>{
+        try {
+            await addDraftMail(mailSubject,mailBody);
+            setMailSubject("");
+            setMailBody("");
+            increaseStat('drafts');
+            navigate("/draft-mail");
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <div className="flex-1 overflow-auto relative z-10">
             <Header title="Send Mail" />
 
-            <main className="py-6 px-4 lg:px-8 h-[30vh] md:h-[40vh] w-[100%] flex flex-col items-center justify-center overflow-x-auto ">
+            <main className="py-6 px-4 lg:px-8 w-[100%] flex flex-col items-center justify-center overflow-x-auto ">
                 <motion.form
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -23,37 +52,78 @@ export const MakeMailPage = () => {
                     <div className="max-w-xl">
                         <div>
                             <label
-                                htmlFor="email"
+                                htmlFor="Subject"
                                 className="block text-sm font-medium leading-6 text-white-900"
                             >
-                                Email address
+                                Subject
                             </label>
                             <div className="my-2">
                                 <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
+                                    id="Subject"
+                                    name="Subject"
+                                    type="text"
                                     required
-                                    value={"all"}
-                                    onChange={(e) => e.target.value}
-                                    placeholder="Email address"
-                                    autoComplete="email"
-                                    className="block w-full rounded-md border-0 p-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 md:min-w-96 min-w-64   "
+                                    onChange={(e) =>
+                                        setMailSubject(e.target.value)
+                                    }
+                                    placeholder="Mail Subject"
+                                    value={mailSubject as string}
+                                    disabled={isAddingMail || isAddingDraftMail}
+                                    className="block w-full rounded-md border-0 p-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 md:min-w-96 min-w-64"
                                 />
                             </div>
                         </div>
                         <div>
-                            <MailEditor />
+                            <label
+                                htmlFor="Message"
+                                className="block text-sm font-medium leading-6 text-white-900"
+                            >
+                                Message
+                            </label>
+                            <div className="my-2">
+                                <textarea
+                                    id="Message"
+                                    name="Message"
+                                    required
+                                    onChange={(e) =>
+                                        setMailBody(e.target.value)
+                                    }
+                                    placeholder="Mail Message"
+                                    value={mailBody as string}
+                                    disabled={isAddingMail || isAddingDraftMail}
+                                    className="block w-full rounded-md border-0 p-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 md:min-w-96 min-w-64   "
+                                />
+                            </div>
                         </div>
-                        <div>
+                        <div className="flex gap-1">
                             <button
                                 type="submit"
-                                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="flex w-[50%] justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                                onClick={handleSendMail}
+                                disabled={isAddingMail || isAddingDraftMail}
                             >
-                                {isSendingMail ? (
+                                {isAddingMail ? (
                                     <Loader className="w-6 h-6 animate-spin  mx-auto" />
                                 ) : (
-                                    "Add Email"
+                                    <div className="flex items-center gap-1">
+                                        <Send size={14} />
+                                        Send Mail
+                                    </div>
+                                )}
+                            </button>
+                            <button
+                                type="submit"
+                                className="flex w-[50%] justify-center rounded-md bg-yellow-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
+                                onClick={handleDraftMail}
+                                disabled={isAddingMail || isAddingDraftMail}
+                            >
+                                {isAddingDraftMail ? (
+                                    <Loader className="w-6 h-6 animate-spin  mx-auto" />
+                                ) : (
+                                    <div className="flex items-center gap-1">
+                                        <SquarePen size={14} />
+                                        Draft Mail
+                                    </div>
                                 )}
                             </button>
                         </div>
@@ -68,7 +138,7 @@ export const MakeMailPage = () => {
                     Back To Mail List?{" "}
                     <Link
                         to="/send-mail"
-                        className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                        className="font-semibold leading-6 text-green-600 hover:text-green-500"
                     >
                         Go Back
                     </Link>

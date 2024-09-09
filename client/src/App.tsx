@@ -12,7 +12,8 @@ import {
     EmailSubscribersPage,
     AddEmailPage,
     SendMailPage,
-    MakeMailPage
+    MakeMailPage,
+    DraftMailPage
 } from "./pages";
 import { AuthState } from "./state/AuthState";
 import { Navigate } from "react-router-dom";
@@ -129,6 +130,11 @@ const App = () => {
             <Route path='/add-mail' element={
               <ProtectedRoute>
                 <MakeMailPage/>
+              </ProtectedRoute>
+            }/>
+            <Route path='/draft-mail' element={
+              <ProtectedRoute>
+                <DraftMailPage/>
               </ProtectedRoute>
             }/>
           <Route

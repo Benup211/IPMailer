@@ -1,22 +1,22 @@
 import { motion } from "framer-motion";
-import { Search, Trash2, CirclePlus } from "lucide-react";
+import { Search, Send } from "lucide-react";
 import { useState, useEffect } from "react";
 import { FC, ReactElement } from "react";
 import { IMails } from "../../types";
-import { useNavigate } from "react-router-dom";
 import { useMailStore } from "../../state/MailState";
+import { useNavigate } from "react-router-dom";
 import { AuthState } from "../../state/AuthState";
 
-export const SendMailTable: FC<IMails> = (props): ReactElement => {
-    const { mails } = props;
-    const { deleteMail } = useMailStore();
-    const navigate = useNavigate();
-    const { decreaseStat } =AuthState();
-    const [searchTerm, setSearchTerm] = useState("");
-    const [filteredMails, setFilteredMails] = useState(mails);
 
+export const DraftMailTable: FC<IMails> = (props): ReactElement => {
+    const { mails } = props;
+    const { deleteDraftMail } = useMailStore();
+    const {decreaseStat}=AuthState();
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredDraftMails, setFilteredDraftMails] = useState(mails);
+    const navigate = useNavigate();
     useEffect(() => {
-        setFilteredMails(mails);
+        setFilteredDraftMails(mails);
     }, [mails]);
 
     const handleSearch = (e: { target: { value: string } }) => {
@@ -25,22 +25,20 @@ export const SendMailTable: FC<IMails> = (props): ReactElement => {
         const filtered = mails.filter((mail) =>
             mail.subject.toLowerCase().includes(term)
         );
-        setFilteredMails(filtered);
+        setFilteredDraftMails(filtered);
     };
 
-    const addMail = () => {
-        navigate("/add-mail");
-    };
 
-    const handledeleteMail = async (
+    const handleDeleteDraftMail = async (
         id: string | number,
     ) => {
         try {
-            await deleteMail(id);
-            setFilteredMails((prev) =>
+            await deleteDraftMail(id);
+            setFilteredDraftMails((prev) =>
                 prev.filter((mail) => mail.id !== id)
             );
-            decreaseStat('mails');
+            decreaseStat('drafts');
+            navigate("/add-mail");
         } catch (error) {
             console.log(error);
         }
@@ -55,7 +53,7 @@ export const SendMailTable: FC<IMails> = (props): ReactElement => {
         >
             <div className="relative flex flex-col md:flex-row md:justify-between items-start md:items-center mb-6">
                 <h2 className="text-xl font-semibold text-gray-100">
-                    Mail List
+                    Draft Mails
                 </h2>
                 <div className="flex items-center justify-between my-2 overflow-x-auto w-[100%] md:w-auto">
                     <div className="relative">
@@ -71,13 +69,6 @@ export const SendMailTable: FC<IMails> = (props): ReactElement => {
                             size={18}
                         />
                     </div>
-                    <div>
-                        <CirclePlus
-                            className="relative text-gray-400 mx-2"
-                            style={{ width: "2rem", height: "2rem" }}
-                            onClick={addMail}
-                        />
-                    </div>
                 </div>
             </div>
 
@@ -89,7 +80,7 @@ export const SendMailTable: FC<IMails> = (props): ReactElement => {
                                 Email Subject
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                Send Date
+                                Draft Date
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                 Actions
@@ -98,14 +89,14 @@ export const SendMailTable: FC<IMails> = (props): ReactElement => {
                     </thead>
 
                     <tbody className="divide-y divide-gray-700">
-                        {filteredMails.length === 0 ? (
+                        {filteredDraftMails.length === 0 ? (
                             <tr className="text-sm p-4 font-bold">
                                 <td className="p-4" colSpan={3}>
-                                    No Mail Found
+                                    No Draft Mail Found
                                 </td>
                             </tr>
                         ) : (
-                            filteredMails.map((mailData, index) => (
+                            filteredDraftMails.map((mailData, index) => (
                                 <motion.tr
                                     key={index}
                                     initial={{ opacity: 0 }}
@@ -120,14 +111,14 @@ export const SendMailTable: FC<IMails> = (props): ReactElement => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                                         <button
-                                            className="text-red-400 hover:text-red-300"
+                                            className="text-yellow-400 hover:text-red-300"
                                             onClick={() =>
-                                                handledeleteMail(
+                                                handleDeleteDraftMail(
                                                     mailData.id
                                                 )
                                             }
                                         >
-                                            <Trash2 size={18} />
+                                            <Send size={18} />
                                         </button>
                                     </td>
                                 </motion.tr>

@@ -6,8 +6,16 @@ interface User{
     createdAt:string;
     updatedAt:string;
 }
+interface Stat{
+    subscribers:number;
+    drafts:number;
+    mails:number;
+    smtps:number;
+    proxys:number;
+}
 export interface IAuthState{
     user:User;
+    stat:Stat;
     isCheckingAuth:boolean;
     isLoading:boolean;
     isAuthenticated:boolean;
@@ -16,4 +24,6 @@ export interface IAuthState{
     loginUser:Function;
     logoutUser:Function;
     checkAuth:()=>Promise<any>;
+    increaseStat:Function;
+    decreaseStat:Function;
 }

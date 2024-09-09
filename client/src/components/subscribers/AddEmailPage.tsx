@@ -1,10 +1,10 @@
-import { Header } from "../components/common/header";
+import { Header } from "../common/header";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useSubscriberStore } from "../state/SubscriberState";
+import { useSubscriberStore } from "../../state/SubscriberState";
 import { Loader } from "lucide-react";
-import { AuthState } from "../state/AuthState";
+import { AuthState } from "../../state/AuthState";
 import { useNavigate } from "react-router-dom";
 export const AddEmailPage = () => {
     const [email, setEmail] = useState("");
