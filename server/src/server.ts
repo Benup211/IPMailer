@@ -5,7 +5,8 @@ import cors from 'cors';
 import { Request, Response,NextFunction } from "express";
 import AuthRoute from './routes/auth.route';
 import TokenRoute from "./routes/token.route";
-import subscriberRoute from "./routes/subscriber.route";
+import SubscriberRoute from "./routes/subscriber.route";
+import MailRoute from "./routes/mail.route";
 
 export class MainServer {
     public app: express.Application = express();
@@ -26,7 +27,8 @@ export class MainServer {
     setRoutes() {
         this.app.use("/api/auth", AuthRoute);
         this.app.use("/api/token", TokenRoute);
-        this.app.use("/api/subscriber", subscriberRoute);
+        this.app.use("/api/subscriber", SubscriberRoute);
+        this.app.use("/api/mail", MailRoute);
     }
     handle404Error() {
 		this.app.use((req: Request, res: Response) => {

@@ -35,4 +35,11 @@ export class SubscriberRepository {
             },
         });
     }
+    static async totalSubscribers(userID: string | number) {
+        return await prisma.subscriber.count({
+            where: {
+                userId: parseInt(userID.toString()),
+            },
+        });
+    }
 }

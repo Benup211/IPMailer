@@ -1,5 +1,5 @@
 import { Request, Response,NextFunction } from 'express';
-import { SubscriberRepository } from '../repository/subscriber.repository';
+import { SubscriberRepository } from '../repository';
 import { AuthRepository } from '../repository';
 import { ResponseService } from '../services';
 export class SubscriberController{

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthRepository, TokenRepository } from "../repository/";
+import { AuthRepository, TokenRepository,SubscriberRepository,MailRepository } from "../repository/";
 import { ResponseService, JwtService, UserService } from "../services";
 import { sendVerifyMail, sendTwoFACode } from "../services/mail.service";
 import { ETokenType } from "../types";
@@ -100,9 +100,23 @@ export class AuthController {
     static async getUser(req: Request, res: Response, next: NextFunction) {
         try {
             const user = await AuthRepository.findUserById(req.body.userID);
-            return res.status(200).json(user);
+            const subscribers = await SubscriberRepository.totalSubscribers(req.body.userID);
+            const drafts = await MailRepository.totalDraftMails(req.body.userID);
+            const mails = await MailRepository.totalSendMails(req.body.userID);
+            const smtps = 0;
+            const proxys = 0;
+            const stat = { subscribers, drafts, mails, smtps, proxys };
+            return res.status(200).json({user,stat});
         } catch (error) {
             next(error);
         }
     }
 }
+
+// interface Stat{
+//     subscribers:number;
+//     drafts:number;
+//     mails:number;
+//     smtps:number;
+//     proxys:number;
+// }
