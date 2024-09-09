@@ -23,6 +23,8 @@ model User {
   updatedAt DateTime @updatedAt
   tokens   Token[]
   subscribers Subscriber[]
+  mails     Mail[]
+  drafts   DraftMail[]
 }
 
 enum TokenType {
@@ -44,5 +46,23 @@ model Subscriber {
   email     String  @unique
   userId    Int
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Mail{
+  id        Int     @id @default(autoincrement())
+  subject   String
+  message      String
+  sendDate DateTime @default(now())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model DraftMail{
+  id        Int     @id @default(autoincrement())
+  subject   String
+  message      String
+  sendDate DateTime @default(now())
+  userId    Int
   user      User     @relation(fields: [userId], references: [id])
 }
