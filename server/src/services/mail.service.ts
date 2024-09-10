@@ -2,7 +2,6 @@ import nodemailer from "nodemailer";
 import dotenv from 'dotenv';
 dotenv.config();
 import { WELCOME_EMAIL_AND_VERIFY_TEMPLATE,TWO_FA_CODE_TEMPLATE } from "./email.template";
-import exp from "constants";
 
 const verification_link = "http://localhost:5173";
 
