@@ -25,6 +25,7 @@ model User {
   subscribers Subscriber[]
   mails     Mail[]
   drafts   DraftMail[]
+  smtps  SmtpServer[]
 }
 
 enum TokenType {
@@ -63,6 +64,17 @@ model DraftMail{
   subject   String
   message      String
   sendDate DateTime @default(now())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model SmtpServer{
+  id        Int     @id @default(autoincrement())
+  host   String
+  port      Int
+  username String
+  password String
+  addedAt DateTime @default(now())
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
 }
