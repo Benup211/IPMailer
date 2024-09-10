@@ -10,3 +10,4 @@ export * from '../components/subscribers/AddEmailPage';
 export * from './SendMailPage';
 export * from './MakeMailPage';
 export * from './DraftMailPage';
+export * from './SmtpPage';

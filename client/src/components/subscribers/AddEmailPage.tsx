@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 export const AddEmailPage = () => {
     const [email, setEmail] = useState("");
     const {isAddingSubscriber,addSubscriber}=useSubscriberStore();
-    const {user}=AuthState();
+    const {user,increaseStat}=AuthState();
     const navigate=useNavigate();
     const handleAddEmailSubmit = async (
         e: React.FormEvent<HTMLFormElement>
@@ -18,6 +18,7 @@ export const AddEmailPage = () => {
         try {
             await addSubscriber(email,user?.id as string);
             setEmail("");
+            increaseStat("subscribers");
             navigate("/email-subscribers");
             
         } catch (error) {

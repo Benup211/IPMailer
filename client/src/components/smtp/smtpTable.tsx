@@ -2,47 +2,45 @@ import { motion } from "framer-motion";
 import { Search, Trash2, CirclePlus } from "lucide-react";
 import { useState, useEffect } from "react";
 import { FC, ReactElement } from "react";
-import { ISubscribers } from "../../types";
+import { ISmtpServerProps } from "../../types";
 import { useNavigate } from "react-router-dom";
-import { useSubscriberStore } from "../../state/SubscriberState";
 import { AuthState } from "../../state/AuthState";
+import { useSmtpStore } from "../../state/SmtpState";
 
-export const SubscribersTable: FC<ISubscribers> = (props): ReactElement => {
-    const { subscribers } = props;
-    const { deleteSubscriber } = useSubscriberStore();
-    const { user,decreaseStat } = AuthState();
+export const SmtpTable: FC<ISmtpServerProps> = (props): ReactElement => {
+    const { smtpServer } = props;
+    const {decreaseStat } = AuthState();
     const navigate = useNavigate();
-
+    const {deleteSmtpServer}=useSmtpStore();
     const [searchTerm, setSearchTerm] = useState("");
-    const [filteredSubscribers, setFilteredSubscribers] = useState(subscribers);
-
+    const [filteredSmtps, setFilteredSmtps] = useState(smtpServer);
+    console.log(smtpServer)
     useEffect(() => {
-        setFilteredSubscribers(subscribers);
-    }, [subscribers]);
+        setFilteredSmtps(smtpServer);
+    }, [smtpServer]);
 
     const handleSearch = (e: { target: { value: string } }) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
-        const filtered = subscribers.filter((subscriber) =>
-            subscriber.email.toLowerCase().includes(term)
+        const filtered = smtpServer.filter((smtp) =>
+            smtp.username.toLowerCase().includes(term)||smtp.host.toLowerCase().includes(term)
         );
-        setFilteredSubscribers(filtered);
+        setFilteredSmtps(filtered);
     };
 
-    const addEmail = () => {
-        navigate("/add-email");
+    const addSmtp = () => {
+        navigate("/add-smtp");
     };
 
-    const handleDeleteSubscriber = async (
+    const handleDeleteSmtp = async (
         id: string | number,
-        userID: string | number
     ) => {
         try {
-            await deleteSubscriber(id, userID);
-            setFilteredSubscribers((prev) =>
-                prev.filter((subscriber) => subscriber.id !== id)
+            deleteSmtpServer(id as number);
+            setFilteredSmtps((prev) =>
+                prev.filter((smtp) => smtp.id !== id)
             );
-            decreaseStat("subscribers");
+            decreaseStat("smtps");
         } catch (error) {
             console.log(error);
         }
@@ -57,13 +55,13 @@ export const SubscribersTable: FC<ISubscribers> = (props): ReactElement => {
         >
             <div className="relative flex flex-col md:flex-row md:justify-between items-start md:items-center mb-6">
                 <h2 className="text-xl font-semibold text-gray-100">
-                    Subscribers List
+                    Smtp List
                 </h2>
                 <div className="flex items-center justify-between my-2 overflow-x-auto w-[100%] md:w-auto">
                     <div className="relative">
                         <input
                             type="text"
-                            placeholder="Search Subscribers..."
+                            placeholder="Search Smtp Server..."
                             className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[240px]"
                             onChange={handleSearch}
                             value={searchTerm}
@@ -77,7 +75,7 @@ export const SubscribersTable: FC<ISubscribers> = (props): ReactElement => {
                         <CirclePlus
                             className="relative text-gray-400 mx-2"
                             style={{ width: "2rem", height: "2rem" }}
-                            onClick={addEmail}
+                            onClick={addSmtp}
                         />
                     </div>
                 </div>
@@ -88,10 +86,16 @@ export const SubscribersTable: FC<ISubscribers> = (props): ReactElement => {
                     <thead>
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                Email
+                                Host
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                Joined Date
+                                Port
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Username
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Added At
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                 Actions
@@ -100,38 +104,38 @@ export const SubscribersTable: FC<ISubscribers> = (props): ReactElement => {
                     </thead>
 
                     <tbody className="divide-y divide-gray-700">
-                        {filteredSubscribers.length === 0 ? (
+                        {filteredSmtps.length === 0 ? (
                             <tr className="text-sm p-4 font-bold">
                                 <td className="p-4" colSpan={3}>
-                                    No Subscribers Found
+                                    No Smtp Server Found
                                 </td>
                             </tr>
                         ) : (
-                            filteredSubscribers.map((emailData, index) => (
+                            filteredSmtps.map((smtpData, index) => (
                                 <motion.tr
                                     key={index}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.3 }}
                                 >
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100 flex gap-2 items-center">
-                                        <img
-                                            src={`https://avatar.iran.liara.run/public/boy?username=${emailData.email.toString()}`}
-                                            alt={emailData.email.toString()}
-                                            className="size-10 rounded-full"
-                                        />
-                                        {emailData.email}
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
+                                        {smtpData.host}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
+                                        {smtpData.port}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
+                                        {smtpData.username}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                                        {new Date(emailData.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                        {new Date(smtpData.addedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                                         <button
                                             className="text-red-400 hover:text-red-300"
                                             onClick={() =>
-                                                handleDeleteSubscriber(
-                                                    emailData.id,
-                                                    user.id
+                                                handleDeleteSmtp(
+                                                    smtpData.id
                                                 )
                                             }
                                         >

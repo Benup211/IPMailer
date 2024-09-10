@@ -13,8 +13,10 @@ import {
     AddEmailPage,
     SendMailPage,
     MakeMailPage,
-    DraftMailPage
+    DraftMailPage,
+    SmtpPage
 } from "./pages";
+import { AddSmtp } from "./components/smtp/AddSmtp";
 import { AuthState } from "./state/AuthState";
 import { Navigate } from "react-router-dom";
 import { IRedirectAuthUserProps } from "./types";
@@ -137,6 +139,17 @@ const App = () => {
                 <DraftMailPage/>
               </ProtectedRoute>
             }/>
+            <Route path='/smtp-server' element={
+              <ProtectedRoute>
+                <SmtpPage/>
+              </ProtectedRoute>
+            } />
+            <Route path='/add-smtp' element={
+              <ProtectedRoute>
+                <AddSmtp/>
+              </ProtectedRoute>
+            } />
+
           <Route
             path="/logout"
             element={

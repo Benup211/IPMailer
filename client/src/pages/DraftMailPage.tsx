@@ -2,7 +2,7 @@ import {motion} from 'framer-motion';
 import { Header } from '../components/common/header';
 import { DraftMailTable } from '../components/mails/draftMailTable';
 import { StatCard } from '../components/common/statcard';
-import { Send, SquarePen } from 'lucide-react';
+import { Send, SquarePen,User} from 'lucide-react';
 import { useMailStore } from '../state/MailState';
 import {useEffect} from "react";
 import { AuthState } from '../state/AuthState';
@@ -32,7 +32,8 @@ export const DraftMailPage = () => {
                     transition={{ duration: 1 }}
                 >
                  <StatCard name='Send Mail' icon={Send} value={`${stat.mails}`} color='#10B981'/>
-                 <StatCard name='Draft' icon={SquarePen} value={`${stat.drafts}`} color='#3B82F6'/>  
+                 <StatCard name='Draft' icon={SquarePen} value={`${stat.drafts}`} color='#3B82F6'/>
+                 <StatCard name='Subscribers' icon={User} value={`${stat.subscribers}`} color='#23aefc'/>
                 </motion.div>
                 <DraftMailTable mails={draftMails}/>
                 {/* CHARTS */}
