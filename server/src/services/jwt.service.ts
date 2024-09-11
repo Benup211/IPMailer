@@ -4,9 +4,9 @@ export class JwtService {
     static async sign(res: Response, payload: any, secret: string, options: any): Promise<string> {
         const token = jwt.sign(payload, secret, options);
         res.cookie("Token", token, {
-            secure: process.env.NODE_ENV === 'production',
+            secure: false,
             httpOnly: true,
-            sameSite: "strict",
+            sameSite: 'lax',
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
         return token;

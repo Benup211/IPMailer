@@ -8,6 +8,7 @@ import TokenRoute from "./routes/token.route";
 import SubscriberRoute from "./routes/subscriber.route";
 import MailRoute from "./routes/mail.route";
 import SmtpRoute from "./routes/smtp.route";
+import ProxyRoute from "./routes/proxy.route";
 
 export class MainServer {
     public app: express.Application = express();
@@ -21,7 +22,7 @@ export class MainServer {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cookieParser());
-        this.app.use(cors({origin: ["http://localhost:5173","https://unique-squirrel-enormously.ngrok-free.app"], credentials: true}));
+        this.app.use(cors({origin: ["http://localhost:5173","https://unique-squirrel-enormously.ngrok-free.app","http://localhost:3001"], credentials: true}));
         this.app.use(bodyParser.json());
     }
 
@@ -31,6 +32,7 @@ export class MainServer {
         this.app.use("/api/subscriber", SubscriberRoute);
         this.app.use("/api/mail", MailRoute);
         this.app.use("/api/smtp", SmtpRoute);
+        this.app.use("/api/proxy", ProxyRoute);
     }
     handle404Error() {
 		this.app.use((req: Request, res: Response) => {
