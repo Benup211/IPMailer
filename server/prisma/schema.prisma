@@ -26,6 +26,7 @@ model User {
   mails     Mail[]
   drafts   DraftMail[]
   smtps  SmtpServer[]
+  proxyServers ProxyServer[]
 }
 
 enum TokenType {
@@ -74,6 +75,15 @@ model SmtpServer{
   port      Int
   username String
   password String
+  addedAt DateTime @default(now())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model ProxyServer{
+  id        Int     @id @default(autoincrement())
+  host   String
+  port      Int
   addedAt DateTime @default(now())
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
