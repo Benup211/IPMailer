@@ -3,8 +3,8 @@ interface User{
     email:string;
     organization:string;
     active:boolean;
-    createdAt:string;
-    updatedAt:string;
+    createdAt:Date;
+    updatedAt:Date;
 }
 interface Stat{
     subscribers:number;

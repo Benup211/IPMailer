@@ -11,3 +11,5 @@ export * from './SendMailPage';
 export * from './MakeMailPage';
 export * from './DraftMailPage';
 export * from './SmtpPage';
+export * from './ProxyPage';
+export * from './SettingPage';

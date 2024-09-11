@@ -26,7 +26,6 @@ export const useSubscriberStore = create<ISubscriberState>((set) => ({
                 subscribers: response.data.subscribers,
                 isGettingSubscribers: false,
             });
-            console.log(response.data.subscribers);
             return response;
         } catch (err) {
             const { response } = err as AxiosError<IErrorResponse>;
@@ -58,7 +57,6 @@ export const useSubscriberStore = create<ISubscriberState>((set) => ({
     deleteSubscriber: async (id: string | number, userID: string | number) => {
         set({ isDeletingSubscriber: true });
         try {
-            console.log(id, userID);
             const response = await axios.post(
                 `${API_URL}/subscriber/delete-subscriber`,
                 { id, userID }

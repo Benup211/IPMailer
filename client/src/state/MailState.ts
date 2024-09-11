@@ -34,7 +34,6 @@ export const useMailStore=create<IMailState>((set)=>({
                 mails:response.data.mails,
                 isGettingMails:false,
             });
-            console.log(response.data.mails);
             return response;
         }catch(err){
             const {response}=err as AxiosError<IErrorResponse>;
@@ -101,7 +100,6 @@ export const useMailStore=create<IMailState>((set)=>({
                 draftMails:response.data.mails,
                 isGettingMails:false,
             });
-            console.log(response.data.mails);
             return response;
         }catch(err){
             const {response}=err as AxiosError<IErrorResponse>;

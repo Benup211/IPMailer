@@ -14,14 +14,19 @@ import {
     SendMailPage,
     MakeMailPage,
     DraftMailPage,
-    SmtpPage
+    SmtpPage,
+    ProxyPage,
+    SettingPage
 } from "./pages";
 import { AddSmtp } from "./components/smtp/AddSmtp";
+import { UpdateSmtp } from "./components/smtp/UpdateSmtp";
+import { AddProxy } from "./components/proxy/AddProxy";
 import { AuthState } from "./state/AuthState";
 import { Navigate } from "react-router-dom";
 import { IRedirectAuthUserProps } from "./types";
 import { FC, useState, useEffect, useRef } from "react";
 import { Loader } from "lucide-react";
+
 
 const App = () => {
     const { isAuthenticated, checkAuth, isCheckingAuth } = AuthState();
@@ -149,7 +154,26 @@ const App = () => {
                 <AddSmtp/>
               </ProtectedRoute>
             } />
-
+            <Route path='/update-smtp' element={
+              <ProtectedRoute>
+                <UpdateSmtp/>
+              </ProtectedRoute>
+            } />
+            <Route path='/proxy-server' element={
+              <ProtectedRoute>
+                <ProxyPage/>
+              </ProtectedRoute>
+            } />
+            <Route path='/add-proxy' element={
+              <ProtectedRoute>
+                <AddProxy/>
+              </ProtectedRoute>
+            } />
+            <Route path='/settings' element={
+              <ProtectedRoute>
+                <SettingPage/>
+              </ProtectedRoute>
+            } />
           <Route
             path="/logout"
             element={

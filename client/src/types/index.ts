@@ -8,3 +8,4 @@ export * from './subscriberTypes';
 export * from './statCardTypes';
 export * from './mailTypes';
 export * from './smtpTypes';
+export * from './proxyTypes';

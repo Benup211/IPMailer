@@ -11,8 +11,8 @@ export const AuthState = create<IAuthState>((set) => ({
         email: "",
         organization: "",
         active: false,
-        createdAt: "",
-        updatedAt: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
     },
     stat: {
         subscribers: 0,
@@ -35,7 +35,6 @@ export const AuthState = create<IAuthState>((set) => ({
     ) => {
         set({ isLoading: true });
         try {
-            console.log(API_URL);
             const response = await axios.post(`${API_URL}/auth/register`, {
                 email,
                 password,
@@ -95,7 +94,6 @@ export const AuthState = create<IAuthState>((set) => ({
                 user: response.data.user,
                 stat: response.data.stat,
             });
-            console.log(response.data.stat);
             return response;
         } catch (err) {
             const { response } = err as AxiosError<IErrorResponse>;

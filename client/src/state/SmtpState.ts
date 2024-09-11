@@ -12,6 +12,19 @@ export const useSmtpStore = create<ISmtpServerState>((set) => ({
     isDeletingSmtp:false,
     isUpdatingSmtp:false,
     isCreatingSmtp:false,
+    seletedSmtpServer:{
+        id:0,
+        host:"",
+        port:0,
+        username:"",
+        password:"",
+        addedAt:new Date()
+    },
+    setSeletedSmtpServer:(id:number)=>{
+        set((state)=>({
+            seletedSmtpServer:state.smtpServers.find((smtp)=>smtp.id===id)
+        }));
+    },
     gettingSmtp:async()=>{
         set({isGettingSmtpServers:true})
         try{
@@ -20,7 +33,6 @@ export const useSmtpStore = create<ISmtpServerState>((set) => ({
                 smtpServers:response.data.smtp,
                 isGettingSmtpServers:false
             })
-            console.log(response.data.smtp)
         }catch(err){
             const { response } = err as AxiosError<IErrorResponse>;
             set({ isGettingSmtpServers: false });
@@ -39,7 +51,6 @@ export const useSmtpStore = create<ISmtpServerState>((set) => ({
                 isCreatingSmtp: false,
             }));
             toast.success("Server Added Sucessfully");
-            console.log(response.data.smtp);
             return response;
         } catch (err) {
             const { response } = err as AxiosError<IErrorResponse>;
@@ -56,7 +67,6 @@ export const useSmtpStore = create<ISmtpServerState>((set) => ({
                 isDeletingSmtp: false,
             }));
             toast.success("Server Deleted Sucessfully");
-            console.log(response.data.smtp);
             return response;
 
         } catch (err) {
@@ -68,8 +78,8 @@ export const useSmtpStore = create<ISmtpServerState>((set) => ({
     },
     updateSmtpServer: async(host:string,port:number,username:string,password:string,id:number) => {
         try{
-            const response = await axios.put(`${API_URL}/update-smtp`,
-                {host,port,username,password}
+            const response = await axios.put(`${API_URL}/smtp/update-smtp`,
+                {host,port,username,password,id}
             );
             set((state)=>({
                 smtpServers: state.smtpServers.map((smtp)=>{
@@ -78,7 +88,6 @@ export const useSmtpStore = create<ISmtpServerState>((set) => ({
                 isUpdatingSmtp: false,
             }));
             toast.success("Server Updated Sucessfully");
-            console.log(response.data.smtp);
             return response;
     
         }catch(err){

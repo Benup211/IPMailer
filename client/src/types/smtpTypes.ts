@@ -10,6 +10,8 @@ export interface ISmtpServer{
 export interface ISmtpServerState{
     smtpServers: ISmtpServer[];
     isGettingSmtpServers: boolean;
+    seletedSmtpServer:ISmtpServer;
+    setSeletedSmtpServer:(id:number)=>void;
     isDeletingSmtp:boolean;
     isUpdatingSmtp:boolean;
     isCreatingSmtp:boolean;

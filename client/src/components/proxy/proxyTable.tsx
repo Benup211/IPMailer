@@ -1,49 +1,45 @@
 import { motion } from "framer-motion";
-import { Search, Trash2, CirclePlus,RotateCw } from "lucide-react";
+import { Search, Trash2, CirclePlus } from "lucide-react";
 import { useState, useEffect } from "react";
 import { FC, ReactElement } from "react";
-import { ISmtpServerProps } from "../../types";
+import { IProxyServerProps } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { AuthState } from "../../state/AuthState";
-import { useSmtpStore } from "../../state/SmtpState";
+import { useProxyStore } from "../../state/ProxyState";
 
-export const SmtpTable: FC<ISmtpServerProps> = (props): ReactElement => {
-    const { smtpServer } = props;
+export const ProxyTable: FC<IProxyServerProps> = (props): ReactElement => {
+    const { proxyServer } = props;
     const {decreaseStat } = AuthState();
     const navigate = useNavigate();
-    const {deleteSmtpServer,setSeletedSmtpServer}=useSmtpStore();
     const [searchTerm, setSearchTerm] = useState("");
-    const [filteredSmtps, setFilteredSmtps] = useState(smtpServer);
+    const [filteredProxys, setFilteredProxys] = useState(proxyServer);
+    const {deleteProxyServer}=useProxyStore();
     useEffect(() => {
-        setFilteredSmtps(smtpServer);
-    }, [smtpServer]);
+        setFilteredProxys(proxyServer);
+    }, [proxyServer]);
 
     const handleSearch = (e: { target: { value: string } }) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
-        const filtered = smtpServer.filter((smtp) =>
-            smtp.username.toLowerCase().includes(term)||smtp.host.toLowerCase().includes(term)
+        const filtered = proxyServer.filter((proxy) =>
+            proxy.host.toLowerCase().includes(term)
         );
-        setFilteredSmtps(filtered);
+        setFilteredProxys(filtered);
     };
-    const handleUpdateSmtp=(id:number)=>{
-        setSeletedSmtpServer(id);
-        navigate("/update-smtp");
-    }
 
-    const addSmtp = () => {
-        navigate("/add-smtp");
+    const addProxy = () => {
+        navigate("/add-proxy");
     };
 
     const handleDeleteSmtp = async (
         id: string | number,
     ) => {
         try {
-            deleteSmtpServer(id as number);
-            setFilteredSmtps((prev) =>
-                prev.filter((smtp) => smtp.id !== id)
+            deleteProxyServer(id as number);
+            setFilteredProxys((prev) =>
+                prev.filter((proxy) => proxy.id !== id)
             );
-            decreaseStat("smtps");
+            decreaseStat("proxys");
         } catch (error) {
             console.log(error);
         }
@@ -58,13 +54,13 @@ export const SmtpTable: FC<ISmtpServerProps> = (props): ReactElement => {
         >
             <div className="relative flex flex-col md:flex-row md:justify-between items-start md:items-center mb-6">
                 <h2 className="text-xl font-semibold text-gray-100">
-                    Smtp List
+                    Proxy List
                 </h2>
                 <div className="flex items-center justify-between my-2 overflow-x-auto w-[100%] md:w-auto">
                     <div className="relative">
                         <input
                             type="text"
-                            placeholder="Search Smtp Server..."
+                            placeholder="Search Proxy Server..."
                             className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[240px]"
                             onChange={handleSearch}
                             value={searchTerm}
@@ -78,7 +74,7 @@ export const SmtpTable: FC<ISmtpServerProps> = (props): ReactElement => {
                         <CirclePlus
                             className="relative text-gray-400 mx-2"
                             style={{ width: "2rem", height: "2rem" }}
-                            onClick={addSmtp}
+                            onClick={addProxy}
                         />
                     </div>
                 </div>
@@ -95,9 +91,6 @@ export const SmtpTable: FC<ISmtpServerProps> = (props): ReactElement => {
                                 Port
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                Username
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                 Added At
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
@@ -107,14 +100,14 @@ export const SmtpTable: FC<ISmtpServerProps> = (props): ReactElement => {
                     </thead>
 
                     <tbody className="divide-y divide-gray-700">
-                        {filteredSmtps.length === 0 ? (
+                        {filteredProxys.length === 0 ? (
                             <tr className="text-sm p-4 font-bold">
                                 <td className="p-4" colSpan={3}>
-                                    No Smtp Server Found
+                                    No Proxy Server Found
                                 </td>
                             </tr>
                         ) : (
-                            filteredSmtps.map((smtpData, index) => (
+                            filteredProxys.map((proxyData, index) => (
                                 <motion.tr
                                     key={index}
                                     initial={{ opacity: 0 }}
@@ -122,37 +115,24 @@ export const SmtpTable: FC<ISmtpServerProps> = (props): ReactElement => {
                                     transition={{ duration: 0.3 }}
                                 >
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
-                                        {smtpData.host}
+                                        {proxyData.host}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
-                                        {smtpData.port}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
-                                        {smtpData.username}
+                                        {proxyData.port}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                                        {new Date(smtpData.addedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                        {new Date(proxyData.addedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                                         <button
                                             className="text-red-400 hover:text-red-300"
                                             onClick={() =>
                                                 handleDeleteSmtp(
-                                                    smtpData.id
+                                                    proxyData.id
                                                 )
                                             }
                                         >
                                             <Trash2 size={18} />
-                                        </button>
-                                        <button
-                                            className="text-green-400 hover:text-green-300 ml-1"
-                                            onClick={() =>
-                                                handleUpdateSmtp(
-                                                    smtpData.id
-                                                )
-                                            }
-                                        >
-                                            <RotateCw size={18} />
                                         </button>
                                     </td>
                                 </motion.tr>
