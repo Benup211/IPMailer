@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 import dotenv from 'dotenv';
 dotenv.config();
 import { WELCOME_EMAIL_AND_VERIFY_TEMPLATE,TWO_FA_CODE_TEMPLATE } from "./email.template";
+import {ISmtpForMail,IProxyForMail,ISubscriber} from '../types';
 
 const verification_link = "http://localhost:5173";
 
@@ -37,5 +38,59 @@ export const sendTwoFACode = async (to: string,code: string) => {
         });
     } catch (error) {
         console.log("error in sending mail", error);
+    }
+}
+
+export const sendMail = (to: ISubscriber[],subject: string,message: string,smtp:ISmtpForMail[],proxy:IProxyForMail[]) => {
+
+    if(proxy.length===0){
+        to.forEach(async (subscriber) => {
+            try {
+                const smtpServer = smtp[Math.floor(Math.random() * smtp.length)];
+                const transporter = nodemailer.createTransport({
+                    host: smtpServer.host as string,
+                    port: smtpServer.port as number,
+                    secure: true,
+                    auth: {
+                        user: smtpServer.username as string,
+                        pass: smtpServer.password as string,
+                    },
+                } as nodemailer.TransportOptions);
+                await transporter.sendMail({
+                    from: smtpServer.username as string,
+                    to: subscriber.email as string,
+                    subject: subject as string,
+                    html: message as string,
+                });
+            } catch (error) {
+                console.log("error in sending mail", error);
+            }
+        });
+    }
+    else{
+        to.forEach(async (subscriber) => {
+            try {
+                const proxyServer = proxy[Math.floor(Math.random() * proxy.length)];
+                const smtpServer = smtp[Math.floor(Math.random() * smtp.length)];
+                const transporter = nodemailer.createTransport({
+                    host: smtpServer.host as string,
+                    port: smtpServer.port as number,
+                    secure: true,
+                    proxy: `http://${proxyServer.host}:${proxyServer.port}` as string,
+                    auth: {
+                        user: smtpServer.username as string,
+                        pass: smtpServer.password as string,
+                    },
+                } as nodemailer.TransportOptions);
+                await transporter.sendMail({
+                    from: smtpServer.username as string,
+                    to: subscriber.email as string,
+                    subject: subject as string,
+                    html: message as string,
+                });
+            } catch (error) {
+                console.log("error in sending mail", error);
+            }
+        });
     }
 }

@@ -1,3 +1,5 @@
 export * from './IDecodedToken'
 export * from './ETokenType'
 export * from './SmtpTypes'
+export * from './proxyTypes'
+export * from './subscriberTypes'

@@ -37,6 +37,23 @@ export class SmtpRepository {
             });
         }
     }
+    static async getSmtpByUserIdForMail(userId: number) {
+        {
+            return await prisma.smtpServer.findMany({
+                where: {
+                    userId: userId,
+                },
+                select: {
+                    id: true,
+                    host: true,
+                    port: true,
+                    username: true,
+                    password: true,
+                    addedAt: true,
+                },
+            });
+        }
+    }
     static async updateSmtp(smtp: Smtp, id: number) {
         {
             return await prisma.smtpServer.update({
