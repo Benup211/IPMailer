@@ -3,7 +3,8 @@ import { ISmtpServerState, IErrorResponse } from "../types";
 import axios, { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
 
-const API_URL = "http://localhost:3000/api";
+// const API_URL = "http://localhost:3000/api";
+const API_URL = "https://ipmailer.onrender.com/api";
 
 axios.defaults.withCredentials = true;
 export const useSmtpStore = create<ISmtpServerState>((set) => ({

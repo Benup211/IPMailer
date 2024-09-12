@@ -9,7 +9,8 @@ import SubscriberRoute from "./routes/subscriber.route";
 import MailRoute from "./routes/mail.route";
 import SmtpRoute from "./routes/smtp.route";
 import ProxyRoute from "./routes/proxy.route";
-
+import dotenv from 'dotenv';
+dotenv.config();
 export class MainServer {
     public app: express.Application = express();
     constructor() {
@@ -22,7 +23,7 @@ export class MainServer {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cookieParser());
-        this.app.use(cors({origin: ["http://localhost:5173","https://unique-squirrel-enormously.ngrok-free.app","http://localhost:3001"], credentials: true}));
+        this.app.use(cors({origin: ["http://localhost:5173","https://unique-squirrel-enormously.ngrok-free.app","http://localhost:3001",process.env.OriginURL as string], credentials: true}));
         this.app.use(bodyParser.json());
     }
 
