@@ -13,6 +13,11 @@
       {
         "src": "/(.*)",
         "dest": "/dist/$1"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/dist/index.html",
+        "status": 200
       }
     ]
   }

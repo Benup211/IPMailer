@@ -180,6 +180,7 @@ const App = () => {
               isAuthenticated? <LogoutPage /> :<Navigate to="/login" />
             }
           />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <Toaster />
       </div>
