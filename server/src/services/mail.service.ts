@@ -4,7 +4,7 @@ dotenv.config();
 import { WELCOME_EMAIL_AND_VERIFY_TEMPLATE,TWO_FA_CODE_TEMPLATE } from "./email.template";
 import {ISmtpForMail,IProxyForMail,ISubscriber} from '../types';
 
-const verification_link = "http://localhost:5173";
+const verification_link = "https://ip-mailer-benup211s-projects.vercel.app";
 
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST as string,
