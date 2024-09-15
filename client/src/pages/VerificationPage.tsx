@@ -24,7 +24,7 @@ export const VerificationPage=()=>{
     if(isLoading){
         return(
             <div className="flex-1 overflow-auto relative z-10 h-screen w-screen flex justify-center items-center">
-                <Loader className="w-6 h-6 animate-spin  mx-auto" />
+                <Loader className="w-6 h-6 animate-spin  mx-auto text-white" />
             </div>
         )
     }

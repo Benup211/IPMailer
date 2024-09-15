@@ -22,7 +22,7 @@ export const LogoutPage: FC = (): ReactElement => {
     }, []);
     return (
         <div className="z-10 w-screen h-screen flex justify-center items-center">
-            {isLoading && <Loader className="w-6 h-6 animate-spin  mx-auto" />}
+            {isLoading && <Loader className="w-6 h-6 animate-spin  mx-auto text-white" />}
         </div>
     );
 };

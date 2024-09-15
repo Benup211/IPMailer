@@ -44,8 +44,11 @@ const App = () => {
   
     if (isCheckingAuth || !isAuthChecked) {
       return (
-        <div className="flex items-center justify-center h-screen w-screen bg-gray-900">
-          <Loader className="w-6 h-6 animate-spin mx-auto" />
+        <div className="flex flex-col items-center justify-center h-screen w-screen bg-gray-900">
+          <Loader className="w-6 h-6 animate-spin mx-auto text-white" />
+          <p className="mt-1 text-white font-semibold mx-auto">
+            Please wait for 1 mins as backend is deployed in render.I require some time to wake up.
+          </p>
         </div>
       );
     }
