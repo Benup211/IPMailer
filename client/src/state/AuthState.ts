@@ -2,8 +2,7 @@ import { create } from "zustand";
 import { IAuthState, IErrorResponse } from "../types";
 import axios, { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
-// const API_URL = "http://localhost:3000/api";
-const API_URL = "https://ipmailer.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 axios.defaults.withCredentials = true;
 export const AuthState = create<IAuthState>((set) => ({
@@ -11,6 +10,7 @@ export const AuthState = create<IAuthState>((set) => ({
         id: "",
         email: "",
         organization: "",
+        apiKey:"",
         active: false,
         createdAt: new Date(),
         updatedAt: new Date(),

@@ -3,8 +3,7 @@ import { IProxyServerState, IErrorResponse } from "../types";
 import axios, { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
 
-// const API_URL = "http://localhost:3000/api";
-const API_URL = "https://ipmailer.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 axios.defaults.withCredentials = true;
 export const useProxyStore = create<IProxyServerState>((set) => ({

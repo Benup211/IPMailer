@@ -2,6 +2,7 @@ interface User{
     id:string;
     email:string;
     organization:string;
+    apiKey:string;
     active:boolean;
     createdAt:Date;
     updatedAt:Date;

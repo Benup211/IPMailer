@@ -16,7 +16,7 @@ export const AddEmailPage = () => {
     ) => {
         e.preventDefault();
         try {
-            await addSubscriber(email,user?.id as string);
+            await addSubscriber(email,user?.apiKey as string);
             setEmail("");
             increaseStat("subscribers");
             navigate("/email-subscribers");

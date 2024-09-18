@@ -3,8 +3,7 @@ import { ISubscriberState, IErrorResponse } from "../types";
 import axios, { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
 
-// const API_URL = "http://localhost:3000/api";
-const API_URL = "https://ipmailer.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 axios.defaults.withCredentials = true;
 export const useSubscriberStore = create<ISubscriberState>((set) => ({
@@ -35,12 +34,13 @@ export const useSubscriberStore = create<ISubscriberState>((set) => ({
             throw Error(response?.data.errorMessage);
         }
     },
-    addSubscriber: async (email: string, userID: string | number) => {
+    addSubscriber: async (email: string, apiKey: string | number) => {
         set({ isAddingSubscriber: true });
         try {
+            console.log(email, apiKey);
             const response = await axios.post(
                 `${API_URL}/subscriber/add-subscriber`,
-                { email, userID }
+                { email, apiKey }
             );
             set({
                 isAddingSubscriber: false,
