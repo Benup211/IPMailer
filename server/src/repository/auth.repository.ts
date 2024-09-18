@@ -5,7 +5,7 @@ export class AuthRepository {
         return await prisma.user.findUnique({
             where: {
                 email: email,
-            },
+            }
         });
     }
     static async createUser(
@@ -23,6 +23,8 @@ export class AuthRepository {
                 id: true,
                 email: true,
                 organization: true,
+                active: true,
+                apiKey: true,
                 createdAt: true,
                 updatedAt: true,
             },
@@ -48,6 +50,23 @@ export class AuthRepository {
                 email: true,
                 organization: true,
                 active: true,
+                apiKey: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        });
+    }
+    static async findUserByApiKey(apiKey: string) {
+        return await prisma.user.findUnique({
+            where: {
+                apiKey: apiKey,
+            },
+            select: {
+                id: true,
+                email: true,
+                organization: true,
+                active: true,
+                apiKey: true,
                 createdAt: true,
                 updatedAt: true,
             },

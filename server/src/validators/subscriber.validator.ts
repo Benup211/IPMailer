@@ -3,8 +3,8 @@ import { body } from "express-validator";
 export class SubscriberValidator {
     static addSubscriber() {
         return [
-            body("userID").notEmpty().withMessage("User ID is required"),
-            body("userID").notEmpty().withMessage("User ID is required"),
+            body("email").notEmpty().withMessage("User ID is required"),
+            body("apiKey").notEmpty().withMessage("User ID is required"),
         ];
     }
     static deleteSubscriber() {

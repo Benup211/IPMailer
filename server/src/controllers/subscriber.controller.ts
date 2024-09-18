@@ -22,20 +22,20 @@ export class SubscriberController{
     }
     static async addSubscriber(req:Request, res:Response,next:NextFunction){
         try{
-            const {email,userID} = req.body;
-            const user = await AuthRepository.findUserById(userID);
+            const {email,apiKey} = req.body;
+            const user = await AuthRepository.findUserByApiKey(apiKey);
             if(user){
                 const findSubscriberExist=await SubscriberRepository.findSubscriberByEmail(email);
                 if(findSubscriberExist){
                     next(ResponseService.CreateErrorResponse("Subscriber already exist",400));
                 }
                 else{
-                    const subscriber = await SubscriberRepository.addSubscriber(email,userID);
+                    const subscriber = await SubscriberRepository.addSubscriber(email,user.id);
                     res.status(201).json({subscriber});
                 }
             }
             else{
-                next(ResponseService.CreateErrorResponse("User not found",404));
+                next(ResponseService.CreateErrorResponse("User of given apikey not found",404));
             }
         }catch(error){
             next(error);
