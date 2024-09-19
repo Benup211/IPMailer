@@ -1,11 +1,11 @@
 import {motion} from 'framer-motion';
-import { Header } from '../components/common/header';
-import { DraftMailTable } from '../components/mails/draftMailTable';
-import { StatCard } from '../components/common/statcard';
+import { Header } from '../../../components/common/header';
+import { DraftMailTable } from '../../../components/mails/draftMailTable';
+import { StatCard } from '../../../components/common/statcard';
 import { Send, SquarePen,User} from 'lucide-react';
-import { useMailStore } from '../state/MailState';
+import { useMailStore } from '../../../state/MailState';
 import {useEffect} from "react";
-import { AuthState } from '../state/AuthState';
+import { AuthState } from '../../../state/AuthState';
 export const DraftMailPage = () => {
     const {draftMails,isGettingMails,getDraftMails}=useMailStore();
     const {stat}=AuthState();

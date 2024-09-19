@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { Header } from "../components/common/header";
+import { Header } from "../../../components/common/header";
 import { User } from "lucide-react";
-import { AuthState } from "../state/AuthState";
+import { AuthState } from "../../../state/AuthState";
 
 const backend = import.meta.env.VITE_API_URL;
 export const SettingPage = () => {

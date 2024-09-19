@@ -1,12 +1,12 @@
 import { FC, ReactElement } from "react";
-import { Header } from "../components/common/header";
+import { Header } from "../../../components/common/header";
 import {motion} from "framer-motion";
-import { SendMailTable } from "../components/mails/sendMailTable";
-import { StatCard } from "../components/common/statcard";
+import { SendMailTable } from "../../../components/mails/sendMailTable";
+import { StatCard } from "../../../components/common/statcard";
 import { Send, SquarePen,User } from "lucide-react";
 import { useEffect } from "react";
-import { useMailStore } from "../state/MailState";
-import { AuthState } from "../state/AuthState";
+import { useMailStore } from "../../../state/MailState";
+import { AuthState } from "../../../state/AuthState";
 
 export const SendMailPage: FC = (): ReactElement => {
     const {isGettingMails,getMails,mails}=useMailStore();

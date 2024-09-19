@@ -1,10 +1,10 @@
 import {motion} from 'framer-motion';
-import {Header} from '../components/common/header';
-import {StatCard} from '../components/common/statcard';
-import { AuthState } from '../state/AuthState';
+import {Header} from '../../../components/common/header';
+import {StatCard} from '../../../components/common/statcard';
+import { AuthState } from '../../../state/AuthState';
 import {Server,ServerCog,User} from 'lucide-react';
-import { ProxyTable } from '../components/proxy/proxyTable';
-import { useProxyStore } from '../state/ProxyState';
+import { ProxyTable } from '../../../components/proxy/proxyTable';
+import { useProxyStore } from '../../../state/ProxyState';
 import { useEffect } from 'react';
 export const ProxyPage = () => {
     const { stat } = AuthState();

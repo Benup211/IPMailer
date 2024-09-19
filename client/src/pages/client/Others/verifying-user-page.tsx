@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { TokenState } from "../state/TokenState";
+import { TokenState } from "../../../state/TokenState";
 import {useRef,useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import { Loader } from "lucide-react";
@@ -14,7 +14,7 @@ export const VerificationPage=()=>{
         }else{
             try{
                verifyEmail(id);
-               navigate('/login');
+               navigate('/user/login');
             }catch(err){
                 console.log(err);
             }

@@ -1,9 +1,9 @@
 import {FC,ReactElement} from 'react';
-import { Header } from '../components/common/header';
+import { Header } from '../../../components/common/header';
 import {motion} from 'framer-motion';
 import {  User,Server,ServerCog,Send,SquarePen } from 'lucide-react';
-import { StatCard } from '../components/common/statcard';
-import { AuthState } from '../state/AuthState';
+import { StatCard } from '../../../components/common/statcard';
+import { AuthState } from '../../../state/AuthState';
 export const OverviewPage: FC = (): ReactElement => {
     const {stat}=AuthState();
     return (

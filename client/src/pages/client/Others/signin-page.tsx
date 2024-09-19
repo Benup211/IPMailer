@@ -1,26 +1,34 @@
 import { FC, ReactElement, useState } from "react";
-import Logo from "../assets/ipmailer-favicon-color.png";
+import Logo from "../../../assets/ipmailer-favicon-color.png";
 import { Link } from "react-router-dom";
-import { AuthState } from "../state/AuthState";
-import { Loader } from "lucide-react";
+import { AuthState } from "../../../state/AuthState";
+import { Loader,MoveLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export const SignInPage: FC = (): ReactElement => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const {isLoading,loginUser}=AuthState();
-    const navigate=useNavigate();
-    const handleSignInSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+    const { isLoading, loginUser } = AuthState();
+    const navigate = useNavigate();
+    const handleSignInSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try{
-            await loginUser(email,password);
-            navigate('/two-fa-verification');
-        }catch(err){
+        try {
+            await loginUser(email, password);
+            navigate("/user/two-fa-verification");
+        } catch (err) {
             console.log(err);
         }
     };
     return (
         <>
+            <div className="z-10 m-10 inline-block">
+                <Link to="/" className="flex gap-1 justify-center items-center">
+                    <MoveLeft className="w-4 h-4 text-indigo-600" />
+                    <p className="text-sm text-indigo-600 font-semibold">
+                    Return to site
+                    </p>
+                </Link>
+            </div>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 z-10">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
@@ -28,7 +36,9 @@ export const SignInPage: FC = (): ReactElement => {
                         src={Logo}
                         className="mx-auto h-16 w-16 md:h-20 md:w-20"
                     />
-                    <h1 className="text-center text-2xl font-bold leading-9 tracking-tight text-white-900">IPMailer</h1>
+                    <h1 className="text-center text-2xl font-bold leading-9 tracking-tight text-white-900">
+                        IPMailer
+                    </h1>
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white-900">
                         Sign in to your account
                     </h2>
@@ -68,7 +78,7 @@ export const SignInPage: FC = (): ReactElement => {
                                 </label>
                                 <div className="text-sm">
                                     <Link
-                                        to="/forgot-password"
+                                        to="/user/forgot-password"
                                         className="font-semibold text-indigo-600 hover:text-indigo-500"
                                     >
                                         Forgot password?
@@ -96,7 +106,11 @@ export const SignInPage: FC = (): ReactElement => {
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                {isLoading? <Loader className="w-6 h-6 animate-spin  mx-auto" />:"Sign in"}
+                                {isLoading ? (
+                                    <Loader className="w-6 h-6 animate-spin  mx-auto" />
+                                ) : (
+                                    "Sign in"
+                                )}
                             </button>
                         </div>
                     </form>
@@ -104,7 +118,7 @@ export const SignInPage: FC = (): ReactElement => {
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Don’t have an account yet?{" "}
                         <Link
-                            to="/signup"
+                            to="/user/signup"
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                         >
                             Sign up

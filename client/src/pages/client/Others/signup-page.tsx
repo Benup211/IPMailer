@@ -1,7 +1,7 @@
 import { FC, ReactElement, useState } from "react";
-import Logo from "../assets/ipmailer-favicon-color.png";
+import Logo from "../../../assets/ipmailer-favicon-color.png";
 import { Link } from "react-router-dom";
-import { AuthState } from "../state/AuthState";
+import { AuthState } from "../../../state/AuthState";
 import { Loader } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,7 @@ export const SignUpPage: FC = (): ReactElement => {
                 confirmPassword,
                 organizationName
             );
-            navigate('/login');
+            navigate('/user/login');
         } catch (err) {
             console.log(err);
         }
@@ -150,7 +150,7 @@ export const SignUpPage: FC = (): ReactElement => {
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Already have an account ?{" "}
                         <Link
-                            to="/login"
+                            to="/user/login"
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                         >
                             Sign in

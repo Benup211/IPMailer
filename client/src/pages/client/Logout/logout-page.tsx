@@ -1,5 +1,5 @@
 import { FC, ReactElement, useRef,useEffect } from "react";
-import { AuthState } from "../state/AuthState";
+import { AuthState } from "../../../state/AuthState";
 import { Loader } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 export const LogoutPage: FC = (): ReactElement => {
@@ -10,7 +10,7 @@ export const LogoutPage: FC = (): ReactElement => {
         if(!isLogoutMounted.current){
             try {
                 logoutUser().finally(() => {
-                    navigate("/login");
+                    navigate("/user/login");
                 });
             } catch (err) {
                 console.log(err);
