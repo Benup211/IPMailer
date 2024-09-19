@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { AuthState } from "./state/AuthState";
 import { useState, useEffect, useRef } from "react";
@@ -11,6 +11,7 @@ const App = () => {
     const { isAuthenticated,checkAuth, isCheckingAuth } = AuthState();
     const isMounted = useRef(false);
     const [isAuthChecked, setIsAuthChecked] = useState(false);
+    const location = useLocation();
 
     useEffect(() => {
         if (!isMounted.current) {
@@ -39,7 +40,7 @@ const App = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-900 opacity-80" />
                 <div className="absolute inset-0 backdrop-blur-sm" />
             </div>
-            {isAuthenticated && window.location.pathname.startsWith('/user') && <Sidebar />}
+            {isAuthenticated && location.pathname.startsWith('/user') && <Sidebar />}
             <Routes>
                 <Route path="/user/*" element={<ClientRoute />} />
                 <Route path="/*" element={<HomeRoute />} />
