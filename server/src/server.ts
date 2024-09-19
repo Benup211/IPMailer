@@ -38,6 +38,7 @@ export class MainServer {
             } else {
                 const allowedOrigins = [
                     "http://localhost:5174",
+                    "http://localhost:5173",
                     "https://unique-squirrel-enormously.ngrok-free.app",
                     "http://localhost:3001",
                     process.env.OriginURL as string,

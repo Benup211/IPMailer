@@ -19,7 +19,7 @@ export const AddEmailPage = () => {
             await addSubscriber(email,user?.apiKey as string);
             setEmail("");
             increaseStat("subscribers");
-            navigate("/email-subscribers");
+            navigate("/user/email-subscribers");
             
         } catch (error) {
             console.log(error);
@@ -77,7 +77,7 @@ export const AddEmailPage = () => {
                 className="mt-2 text-center text-sm text-gray-500">
                     Back To Email Subscriber?{" "}
                     <Link
-                        to="/email-subscribers"
+                        to="/user/email-subscribers"
                         className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                     >
                         Go Back

@@ -28,7 +28,7 @@ export const ProxyTable: FC<IProxyServerProps> = (props): ReactElement => {
     };
 
     const addProxy = () => {
-        navigate("/add-proxy");
+        navigate("/user/add-proxy");
     };
 
     const handleDeleteSmtp = async (

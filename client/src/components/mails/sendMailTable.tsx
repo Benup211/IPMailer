@@ -29,7 +29,7 @@ export const SendMailTable: FC<IMails> = (props): ReactElement => {
     };
 
     const addMail = () => {
-        navigate("/add-mail");
+        navigate("/user/add-mail");
     };
 
     const handledeleteMail = async (

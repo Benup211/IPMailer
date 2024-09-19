@@ -28,11 +28,11 @@ export const SmtpTable: FC<ISmtpServerProps> = (props): ReactElement => {
     };
     const handleUpdateSmtp=(id:number)=>{
         setSeletedSmtpServer(id);
-        navigate("/update-smtp");
+        navigate("/user/update-smtp");
     }
 
     const addSmtp = () => {
-        navigate("/add-smtp");
+        navigate("/user/add-smtp");
     };
 
     const handleDeleteSmtp = async (

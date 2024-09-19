@@ -21,7 +21,7 @@ export const AddSmtp = () => {
         try {
             await addSmtpServer(host,Number(port),username,password);
             increaseStat("smtps");
-            navigate("/smtp-server");
+            navigate("/user/smtp-server");
             
         } catch (error) {
             console.log(error);
@@ -142,7 +142,7 @@ export const AddSmtp = () => {
                 className="mt-2 text-center text-sm text-gray-500">
                     Back To Smtp Server?{" "}
                     <Link
-                        to="/smtp-server"
+                        to="/user/smtp-server"
                         className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                     >
                         Go Back

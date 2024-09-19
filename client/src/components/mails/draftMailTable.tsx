@@ -38,7 +38,7 @@ export const DraftMailTable: FC<IMails> = (props): ReactElement => {
                 prev.filter((mail) => mail.id !== id)
             );
             decreaseStat('drafts');
-            navigate("/add-mail");
+            navigate("/user/add-mail");
         } catch (error) {
             console.log(error);
         }

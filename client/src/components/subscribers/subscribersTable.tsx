@@ -30,7 +30,7 @@ export const SubscribersTable: FC<ISubscribers> = (props): ReactElement => {
     };
 
     const addEmail = () => {
-        navigate("/add-email");
+        navigate("/user/add-email");
     };
 
     const handleDeleteSubscriber = async (

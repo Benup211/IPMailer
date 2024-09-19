@@ -26,7 +26,7 @@ export const UpdateSmtp = () => {
                 password,
                 seletedSmtpServer.id
             );
-            navigate("/smtp-server");
+            navigate("/user/smtp-server");
         } catch (error) {
             console.log(error);
         }
@@ -156,7 +156,7 @@ export const UpdateSmtp = () => {
                 >
                     Back To Smtp Server?{" "}
                     <Link
-                        to="/smtp-server"
+                        to="/user/smtp-server"
                         className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                     >
                         Go Back

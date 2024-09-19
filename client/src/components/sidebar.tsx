@@ -19,49 +19,49 @@ const SIDEBAR_ITEMS: ISidebarProps[] = [
         name: "Overview",
         icon: BarChart2,
         color: "#6366f1",
-        path: "/",
+        path: "/user",
     },
     {
         name: "SMTP Server",
         icon: Server,
         color: "#8B5CF6",
-        path: "/smtp-server",
+        path: "/user/smtp-server",
     },
     {
         name: "Proxy Server",
         icon: ServerCog,
         color: "#EC4899",
-        path: "/proxy-server",
+        path: "/user/proxy-server",
     },
     {
         name: "Email Subscribers",
         icon: Mail,
         color: "#10B981",
-        path: "/email-subscribers",
+        path: "/user/email-subscribers",
     },
     {
         name: "Send Mail",
         icon: Send,
         color: "#F59E0B",
-        path: "/send-mail",
+        path: "/user/send-mail",
     },
     {
         name: "Draft Mails",
         icon: SquarePen,
         color: "#3B82F6",
-        path: "/draft-mail",
+        path: "/user/draft-mail",
     },
     {
         name: "Settings",
         icon: Settings,
         color: "#6EE7B7",
-        path: "/settings",
+        path: "/user/settings",
     },
     {
         name:"Logout",
         icon:LogOut,
         color:"#C0392B",
-        path:"/logout"
+        path:"/user/logout"
     }
 ];
 

@@ -4,7 +4,7 @@ dotenv.config();
 import { WELCOME_EMAIL_AND_VERIFY_TEMPLATE,TWO_FA_CODE_TEMPLATE } from "./email.template";
 import {ISmtpForMail,IProxyForMail,ISubscriber} from '../types';
 
-const verification_link = "https://ip-mailer-benup211s-projects.vercel.app";
+const verification_link = process.env.OriginURL as string;
 
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST as string,
@@ -22,7 +22,7 @@ export const sendVerifyMail = async (to: string,verification_id: string) => {
             from:  process.env.SMTP_USER,
             to: to,
             subject: "Verify your email",
-            html: WELCOME_EMAIL_AND_VERIFY_TEMPLATE.replace("{verification_link}", `${verification_link}/verify-email/${verification_id}`),
+            html: WELCOME_EMAIL_AND_VERIFY_TEMPLATE.replace("{verification_link}", `${verification_link}/user/verify-email/${verification_id}`),
         });
     } catch (error) {
         console.log("error in sending mail", error);

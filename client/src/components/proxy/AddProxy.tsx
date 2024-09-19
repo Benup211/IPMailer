@@ -19,7 +19,7 @@ export const AddProxy = () => {
         try {
             await addProxyServer(host,Number(port));
             increaseStat("proxys");
-            navigate("/proxy-server");
+            navigate("/user/proxy-server");
             
         } catch (error) {
             console.log(error);
@@ -96,7 +96,7 @@ export const AddProxy = () => {
                 className="mt-2 text-center text-sm text-gray-500">
                     Back To Proxy Server?{" "}
                     <Link
-                        to="/proxy-server"
+                        to="/user/proxy-server"
                         className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                     >
                         Go Back
