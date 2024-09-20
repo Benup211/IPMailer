@@ -37,7 +37,6 @@ export const useSubscriberStore = create<ISubscriberState>((set) => ({
     addSubscriber: async (email: string, apiKey: string | number) => {
         set({ isAddingSubscriber: true });
         try {
-            console.log(email, apiKey);
             const response = await axios.post(
                 `${API_URL}/subscriber/add-subscriber`,
                 { email, apiKey }

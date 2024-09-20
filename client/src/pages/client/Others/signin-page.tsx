@@ -2,7 +2,7 @@ import { FC, ReactElement, useState } from "react";
 import Logo from "../../../assets/ipmailer-favicon-color.png";
 import { Link } from "react-router-dom";
 import { AuthState } from "../../../state/AuthState";
-import { Loader,MoveLeft } from "lucide-react";
+import { Loader, MoveLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export const SignInPage: FC = (): ReactElement => {
@@ -21,15 +21,18 @@ export const SignInPage: FC = (): ReactElement => {
     };
     return (
         <>
-            <div className="z-10 m-10 inline-block">
-                <Link to="/" className="flex gap-1 justify-center items-center">
-                    <MoveLeft className="w-4 h-4 text-indigo-600" />
-                    <p className="text-sm text-indigo-600 font-semibold">
-                    Return to site
-                    </p>
-                </Link>
-            </div>
-            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 z-10">
+            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 z-10 overflow-y-auto">
+                <div className="mb-10 inline-block">
+                    <Link
+                        to="/"
+                        className="flex gap-1 justify-start md:container md:justify-center lg:w-[80%] items-center"
+                    >
+                        <MoveLeft className="w-4 h-4 text-indigo-600" />
+                        <p className="text-sm text-indigo-600 font-semibold">
+                            Return to site
+                        </p>
+                    </Link>
+                </div>
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
                         alt="IPMailer"

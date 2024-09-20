@@ -15,7 +15,6 @@ export const SignUpPage: FC = (): ReactElement => {
     const handleSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            console.log(email, password, confirmPassword, organizationName);
             await registerUser(
                 email,
                 password,

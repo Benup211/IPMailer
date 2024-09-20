@@ -6,7 +6,6 @@ export const ForgetPasswordPage:FC=():ReactElement=>{
     const [email, setEmail] = useState("");
     const handleForgetPasswordSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(email);
         alert("Forget Password");
         setEmail("");
         return;
