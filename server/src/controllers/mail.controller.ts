@@ -13,7 +13,6 @@ export class MailController{
             if(smtp.length === 0){
                 return next(ResponseService.CreateErrorResponse("SMTP server not setup",404));
             }
-            console.log(subscribers);
             if(subscribers.length === 0){
                 return next(ResponseService.CreateErrorResponse("No subscribers to send mail",404));
             }
