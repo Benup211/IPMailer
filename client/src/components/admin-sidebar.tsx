@@ -10,7 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ISidebarProps } from "../types/index";
 import { Link } from "react-router-dom";
 
-const SIDEBAR_ITEMS: ISidebarProps[] = [
+const ADMIN_SIDEBAR_ITEMS: ISidebarProps[] = [
     {
         name: "Overview",
         icon: BarChart2,
@@ -56,7 +56,7 @@ const AdminSidebar = () => {
                     <Menu size={24} />
                 </motion.button>
                 <nav className="mt-8 flex-grow">
-                    {SIDEBAR_ITEMS.map((item: ISidebarProps) => (
+                    {ADMIN_SIDEBAR_ITEMS.map((item: ISidebarProps) => (
                         <Link key={item.path} to={item.path}>
                             <motion.div className="flex items-center p-4 test-sm font-medium rounded-lg hover:bg-gray-700 transition-colors mb-2">
                                 <item.icon
