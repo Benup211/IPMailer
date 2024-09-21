@@ -12,6 +12,7 @@ export const AuthState = create<IAuthState>((set) => ({
         organization: "",
         apiKey:"",
         active: false,
+        blocked: false,
         createdAt: new Date(),
         updatedAt: new Date(),
     },
@@ -75,7 +76,16 @@ export const AuthState = create<IAuthState>((set) => ({
         set({ isLoading: true });
         try {
             const response = await axios.get(`${API_URL}/auth/logout`);
-            set({ isLoading: false, isAuthenticated: false });
+            set({ isLoading: false, isAuthenticated: false, user: {
+                id: "",
+                email: "",
+                organization: "",
+                apiKey:"",
+                active: false,
+                blocked: false,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            } });
             toast.success(response.data.message);
             return response;
         } catch (err) {
@@ -91,10 +101,11 @@ export const AuthState = create<IAuthState>((set) => ({
             const response = await axios.get(`${API_URL}/auth/getUser`);
             set({
                 isAuthenticated: true,
-                isCheckingAuth: false,
                 user: response.data.user,
+                isCheckingAuth: false,
                 stat: response.data.stat,
             });
+            console.log(response.data);
             return response;
         } catch (err) {
             const { response } = err as AxiosError<IErrorResponse>;

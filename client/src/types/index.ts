@@ -9,3 +9,5 @@ export * from './statCardTypes';
 export * from './mailTypes';
 export * from './smtpTypes';
 export * from './proxyTypes';
+export * from './adminTypes';
+export * from './clientTypes';

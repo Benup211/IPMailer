@@ -1,4 +1,4 @@
-import { Routes, Route,useLocation } from "react-router-dom";
+import { Routes, Route,useLocation,useNavigate } from "react-router-dom";
 import {
     OverviewPage,
     SignInPage,
@@ -26,11 +26,12 @@ import { Navigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import { Loader } from "lucide-react";
 
-export const ClientRoute = () => {
+export const ClientRoute =() => {
     const location = useLocation();
-    const { isAuthenticated,checkAuth, isCheckingAuth } = AuthState();
+    const { isAuthenticated,checkAuth, isCheckingAuth,user} = AuthState();
     const isMounted = useRef(false);
     const [isAuthChecked, setIsAuthChecked] = useState(false);
+    const navigation = useNavigate();
     useEffect(() => {
         if (!isMounted.current) {
             checkAuth().finally(() => {
@@ -51,9 +52,10 @@ export const ClientRoute = () => {
             </div>
         );
     }
-
-
-    const ProtectedRoute: FC<IRedirectAuthUserProps> = ({ children }) => {
+    const ProtectedRoute: FC<IRedirectAuthUserProps> =({ children }) => {
+        if(user.blocked){
+            navigation("/user/logout");
+        }
         return isAuthenticated ? (
             <>{children}</>
         ) : (
@@ -62,6 +64,9 @@ export const ClientRoute = () => {
     };
 
     const RedirectAuthUser: FC<IRedirectAuthUserProps> = ({ children }) => {
+        if(user.blocked){
+            navigation("/user/logout");
+        }
         return isAuthenticated ? <Navigate to="/user/" /> : <>{children}</>;
     };
     return (
@@ -212,7 +217,7 @@ export const ClientRoute = () => {
                         isAuthenticated ? (
                             <LogoutPage />
                         ) : (
-                            <Navigate to="/login" />
+                            <Navigate to="/user/login" />
                         )
                     }
                 />

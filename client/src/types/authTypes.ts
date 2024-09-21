@@ -4,6 +4,7 @@ interface User{
     organization:string;
     apiKey:string;
     active:boolean;
+    blocked:boolean;
     createdAt:Date;
     updatedAt:Date;
 }

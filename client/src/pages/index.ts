@@ -14,3 +14,5 @@ export * from './client/Smtp/smtp-page';
 export * from './client/Proxy/proxy-page';
 export * from './client/Setting/setting-page';
 export * from './admin/Overview/admin-overview-page';
+export * from './admin/Others/login-page';
+export * from './admin/Client/client-page';
