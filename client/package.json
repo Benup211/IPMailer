@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.8",
     "@mdxeditor/editor": "^3.11.3",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
