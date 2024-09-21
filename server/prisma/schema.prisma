@@ -11,7 +11,15 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  // directUrl = env("DIRECT_URL")
+}
+
+model Admin{
+  id      Int     @id @default(autoincrement())
+  username   String  @unique
+  password String
+  active  Boolean @default(true)
+  createdAt DateTime @default(now())
 }
 
 model User {
@@ -20,6 +28,7 @@ model User {
   password String
   organization String
   active  Boolean @default(false)
+  blocked Boolean @default(false)
   apiKey  String @unique @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -42,7 +51,7 @@ model Token {
   type         TokenType
   token        Int
   expiry       DateTime
-  user         User     @relation(fields: [userId], references: [id])
+  user         User     @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
 
 model Subscriber {
@@ -50,7 +59,7 @@ model Subscriber {
   email     String  @unique
   userId    Int
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
 
 model Mail{
@@ -59,7 +68,7 @@ model Mail{
   message      String
   sendDate DateTime @default(now())
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
 
 model DraftMail{
@@ -68,7 +77,7 @@ model DraftMail{
   message      String
   sendDate DateTime @default(now())
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
 
 model SmtpServer{
@@ -79,7 +88,7 @@ model SmtpServer{
   password String
   addedAt DateTime @default(now())
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
 
 model ProxyServer{
@@ -88,5 +97,5 @@ model ProxyServer{
   port      Int
   addedAt DateTime @default(now())
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
