@@ -60,6 +60,14 @@ export class AuthController {
                     )
                 );
             }
+            if (user && user.blocked) {
+                next(
+                    ResponseService.CreateErrorResponse(
+                        "User is blocked,Contact support",
+                        400
+                    )
+                );
+            }
             if (user) {
                 const tokenExist = await TokenRepository.findToken(
                     user.id,

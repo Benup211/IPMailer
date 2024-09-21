@@ -9,6 +9,7 @@ import SubscriberRoute from "./routes/subscriber.route";
 import MailRoute from "./routes/mail.route";
 import SmtpRoute from "./routes/smtp.route";
 import ProxyRoute from "./routes/proxy.route";
+import AdminRoute from "./routes/admin.route";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -63,6 +64,7 @@ export class MainServer {
         this.app.use("/api/mail", MailRoute);
         this.app.use("/api/smtp", SmtpRoute);
         this.app.use("/api/proxy", ProxyRoute);
+        this.app.use("/api/admin", AdminRoute);
     }
 
     handle404Error() {

@@ -24,6 +24,7 @@ export class AuthRepository {
                 email: true,
                 organization: true,
                 active: true,
+                blocked:true,
                 apiKey: true,
                 createdAt: true,
                 updatedAt: true,
@@ -50,6 +51,7 @@ export class AuthRepository {
                 email: true,
                 organization: true,
                 active: true,
+                blocked:true,
                 apiKey: true,
                 createdAt: true,
                 updatedAt: true,
@@ -67,8 +69,33 @@ export class AuthRepository {
                 organization: true,
                 active: true,
                 apiKey: true,
+                blocked:true,
                 createdAt: true,
                 updatedAt: true,
+            },
+        });
+    }
+    static async allUser(){
+        return await prisma.user.findMany({
+            select: {
+                id: true,
+                email: true,
+                organization: true,
+                active: true,
+                apiKey: true,
+                blocked:true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        });
+    }
+    static async blockOrUnblockUser(userId: number, block: boolean) {
+        return await prisma.user.update({
+            where: {
+                id: userId,
+            },
+            data: {
+                blocked: block,
             },
         });
     }
