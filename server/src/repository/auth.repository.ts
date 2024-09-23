@@ -99,4 +99,33 @@ export class AuthRepository {
             },
         });
     }
+    static async deleteUser(userId: number) {
+        return await prisma.user.delete({
+            where: {
+                id: userId,
+            },
+        });
+    }
+    static async countUsers(){
+        return await prisma.user.count();
+    }
+    static async addUserByAdmin(email: string, organization: string, active: boolean, password: string) {
+        return await prisma.user.create({
+            data: {
+                email: email,
+                password: password,
+                organization: organization,
+                active: active,
+            },
+            select: {
+                id: true,
+                email: true,
+                organization: true,
+                active: true,
+                apiKey: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        });
+    }
 }

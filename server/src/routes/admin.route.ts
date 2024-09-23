@@ -29,6 +29,27 @@ class AdminAuthRoute {
             GlobalMiddleware.CheckValidationResult,
             AdminController.loginAdmin
         );
+        this.router.post(
+            "/delete-client",
+            AdminValidator.deleteClient(),
+            GlobalMiddleware.CheckValidationResult,
+            GlobalMiddleware.CheckAdminAuth,
+            AdminController.deleteClient
+        );
+        this.router.post(
+            "/add-client",
+            AdminValidator.addClient(),
+            GlobalMiddleware.CheckValidationResult,
+            GlobalMiddleware.CheckAdminAuth,
+            AdminController.addClient
+        );
+        this.router.post(
+            "/login-client",
+            AdminValidator.loginClient(),
+            GlobalMiddleware.CheckValidationResult,
+            GlobalMiddleware.CheckAdminAuth,
+            AdminController.loginClient
+        );
     }
     putRoutes() {
         this.router.put(

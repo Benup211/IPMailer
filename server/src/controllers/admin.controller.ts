@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AdminAuthRepository,AuthRepository } from "../repository/";
+import { AdminRepository,AuthRepository } from "../repository/";
 import { ResponseService, UserService, JwtService } from "../services";
 import dotenv from "dotenv";
 dotenv.config();
@@ -8,20 +8,19 @@ export class AdminController {
         try {
             const { username, password } = req.body;
             console.log(username, password);
-            const admin = await AdminAuthRepository.findAdmin();
-            console.log(admin);
+            const admin = await AdminRepository.findAdmin();
             if (!admin) {
                 const usernameFromEnv = process.env.ADMIN_USERNAME as string;
                 const passwordFromEnv = process.env.ADMIN_PASSWORD as string;
                 const hashedPassword = await UserService.hashPassword(
                     passwordFromEnv
                 );
-                const newAdmin = await AdminAuthRepository.createAdmin(
+                const newAdmin = await AdminRepository.createAdmin(
                     usernameFromEnv,
                     hashedPassword
                 );
             }
-            const adminFound = await AdminAuthRepository.findAdminByUsername(
+            const adminFound = await AdminRepository.findAdminByUsername(
                 username
             );
             if (!adminFound) {
@@ -68,11 +67,12 @@ export class AdminController {
     static async getAdmin(req: Request, res: Response, next: NextFunction) {
         try {
             const id=req.body.adminID;
-            const admin = await AdminAuthRepository.findAdminById(id);
+            const admin = await AdminRepository.findAdminById(id);
             if(!admin){
                 next(ResponseService.CreateErrorResponse("Admin not found",404));
             }
-            res.status(200).json(admin);
+            const clients=await AuthRepository.countUsers();
+            res.status(200).json({admin,stats:{clients}});
         } catch (error) {
             next(error);
         }
@@ -94,6 +94,47 @@ export class AdminController {
             }
             const updatedUser=await AuthRepository.blockOrUnblockUser(userID,blocked);
             res.status(200).json(updatedUser);
+        } catch (error) {
+            next(error);
+        }
+    }
+    static async deleteClient(req: Request, res: Response, next: NextFunction) {
+        const {userID}=req.body;
+        try {
+            const user=await AuthRepository.findUserById(userID);
+            if(!user){
+                next(ResponseService.CreateErrorResponse("User not found",404));
+            }
+            const deletedUser=await AuthRepository.deleteUser(userID);
+            res.status(200).json(deletedUser);
+        } catch (error) {
+            next(error);
+        }
+    }
+    static async addClient(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { email, organization,password,active } = req.body;
+            const checkClient=await AuthRepository.findUserByEmail(email);
+            if(checkClient){
+                next(ResponseService.CreateErrorResponse("User already exists",400));
+            }
+            const hashedPassword = await UserService.hashPassword(password);
+            const client = await AuthRepository.addUserByAdmin(
+                email,
+                organization,
+                active,
+                hashedPassword
+            );
+            res.status(201).json(client);
+        } catch (error) {
+            next(error);
+        }
+    }
+    static async loginClient(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.body;
+            await JwtService.sign(res, {userID:id}, process.env.JWT_SECRET as string, {expiresIn: "7d"});
+            res.status(200).json({message: "Login successful"});
         } catch (error) {
             next(error);
         }

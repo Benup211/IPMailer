@@ -108,6 +108,10 @@ export class AuthController {
     static async getUser(req: Request, res: Response, next: NextFunction) {
         try {
             const user = await AuthRepository.findUserById(req.body.userID);
+            if(!user){
+                res.clearCookie("Token");
+                next(ResponseService.CreateErrorResponse("User not found",404));
+            }
             const subscribers = await SubscriberRepository.totalSubscribers(req.body.userID);
             const drafts = await MailRepository.totalDraftMails(req.body.userID);
             const mails = await MailRepository.totalSendMails(req.body.userID);

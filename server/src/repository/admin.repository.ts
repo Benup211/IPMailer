@@ -1,6 +1,6 @@
 import prisma from "../models/prisma.model";
 
-export class AdminAuthRepository {
+export class AdminRepository {
     static async findAdmin(){
         return await prisma.admin.findFirst();
     }
