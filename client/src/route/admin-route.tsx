@@ -7,6 +7,7 @@ import { Loader } from "lucide-react";
 import { IRedirectAuthUserProps } from "../types";
 import { AdminLogoutPage } from "../pages/admin/Logout/logout-page";
 import { AdminSettingPage } from "../pages/admin/Settings/setting-page";
+import { AddClient } from "../components/client/add-client";
 export const AdminRoute = () => {
     const { isAdminAuthenticated, isAdminCheckingAuth, checkAdminAuth } =
         useAdminStore();
@@ -67,6 +68,13 @@ export const AdminRoute = () => {
                     element={
                         <ProtectedRoute>
                             <ClientPage />
+                        </ProtectedRoute>
+                    }/>
+                <Route
+                    path="/add-client"
+                    element={
+                        <ProtectedRoute>
+                            <AddClient />
                         </ProtectedRoute>
                     }/>
                 <Route

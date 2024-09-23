@@ -105,7 +105,6 @@ export const AuthState = create<IAuthState>((set) => ({
                 isCheckingAuth: false,
                 stat: response.data.stat,
             });
-            console.log(response.data);
             return response;
         } catch (err) {
             const { response } = err as AxiosError<IErrorResponse>;

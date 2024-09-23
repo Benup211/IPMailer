@@ -4,11 +4,17 @@ import { useState, useEffect } from "react";
 import { FC, ReactElement } from "react";
 import { IClientProps } from "../../types";
 import { SwitchComponent } from "../common/switch";
+import { useClientStore } from "../../state/ClientState";
+import { useNavigate } from "react-router-dom";
+import { useAdminStore } from "../../state/AdminState";
 
 export const ClientTable: FC<IClientProps> = (props): ReactElement => {
     const { clients } = props;
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredClients, setFilteredClients] = useState(clients);
+    const {deleteClient,isDeletingClient}=useClientStore();
+    const {decreaseStat,isLoading,loginClient}=useAdminStore();
+    const navigate=useNavigate();
     useEffect(() => {
         setFilteredClients(clients);
     }, [clients]);
@@ -24,17 +30,23 @@ export const ClientTable: FC<IClientProps> = (props): ReactElement => {
         setFilteredClients(filtered);
     };
 
-    const addSmtp = () => {
-        alert("Add Client");
-        // navigate("/user/add-smtp");
+    const addClient = () => {
+        navigate("/admin/add-client");
+    };
+    const loginToClient = async(id:number|string) => {
+        try{
+            await loginClient(id);
+            navigate("/user");
+        }catch(err){
+            console.log(err);
+        }
     };
 
     const handleDeleteClient = async (id: string | number) => {
         try {
-            // deleteSmtpServer(id as number);
-            alert("Client Deleted"+id);
-            // setFilteredClients((prev) => prev.filter((client) => smtp.id !== id));
-            // decreaseStat("smtps");
+            deleteClient(id as number);
+            setFilteredClients((prev) => prev.filter((client) => client.id !== id));
+            decreaseStat("clients");
         } catch (error) {
             console.log(error);
         }
@@ -69,7 +81,7 @@ export const ClientTable: FC<IClientProps> = (props): ReactElement => {
                         <CirclePlus
                             className="relative text-gray-400 mx-2"
                             style={{ width: "2rem", height: "2rem" }}
-                            onClick={addSmtp}
+                            onClick={addClient}
                         />
                     </div>
                 </div>
@@ -144,14 +156,17 @@ export const ClientTable: FC<IClientProps> = (props): ReactElement => {
                                             onClick={() =>
                                                 handleDeleteClient(clientData.id)
                                             }
+                                            disabled={isDeletingClient}
                                         >
                                             <Trash2 size={18} />
                                         </button>
                                         <button
                                             className="text-green-400 hover:text-green-300 ml-2"
                                             onClick={() =>
-                                                handleDeleteClient(clientData.id)
+                                                loginToClient(clientData.id)
                                             }
+                                            disabled={isLoading}
+                                            
                                         >
                                             <LogIn size={18} />
                                         </button>

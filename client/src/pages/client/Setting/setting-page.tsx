@@ -38,6 +38,9 @@ export const SettingPage = () => {
                                 Organization:<b> {user.organization}</b>
                             </p>
                             <p className="text-gray-400 text-sm md:text-lg">
+                                Verified:<b> {user.active?"True":"False"}</b>
+                            </p>
+                            <p className="text-gray-400 text-sm md:text-lg">
                                 Joined Date:
                                 <b>
                                     {" "}
@@ -60,7 +63,7 @@ export const SettingPage = () => {
                 className="inline-flex text-left flex-col space-x-4 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg shadow-lg rounded-xl p-6 border border-gray-700 mb-8 w-[100%] overflow-x-auto">
                     <div className="flex items-center mb-4">
                         <h2 className="text-xl font-semibold text-gray-100">
-                            Your Subscriber API
+                            Adding Subscriber API
                         </h2>
                     </div>
                     <span className="flex gap-4">

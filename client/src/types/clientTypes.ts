@@ -12,6 +12,7 @@ export interface ICLientState{
     isDeletingClient:boolean;
     isCreatingClient:boolean;
     isblockOrUnblockClient:boolean;
+    setClient: (Subscriber: IClient[])=>void;
     gettingClients:Function;
     addClient: Function;
     deleteClient: (id: number) => void;

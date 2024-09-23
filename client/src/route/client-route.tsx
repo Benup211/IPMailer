@@ -25,6 +25,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import { Loader } from "lucide-react";
+import toast from "react-hot-toast";
 
 export const ClientRoute =() => {
     const location = useLocation();
@@ -54,6 +55,7 @@ export const ClientRoute =() => {
     }
     const ProtectedRoute: FC<IRedirectAuthUserProps> =({ children }) => {
         if(user.blocked){
+            toast.error("Your account is blocked");
             navigation("/user/logout");
         }
         return isAuthenticated ? (
@@ -65,6 +67,7 @@ export const ClientRoute =() => {
 
     const RedirectAuthUser: FC<IRedirectAuthUserProps> = ({ children }) => {
         if(user.blocked){
+            toast.error("Your account is blocked");
             navigation("/user/logout");
         }
         return isAuthenticated ? <Navigate to="/user/" /> : <>{children}</>;
