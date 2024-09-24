@@ -30,7 +30,7 @@ export class MailRepository {
             },
         });
     }
-    static async findMailByUserId(userId: number) {
+    static async findMailByUserId(userId: number,skip?:number,take?:number) {
         return await prisma.mail.findMany({
             where: {
                 userId: userId,
@@ -41,6 +41,8 @@ export class MailRepository {
                 message: true,
                 sendDate: true,
             },
+            skip:skip,
+            take:take,
         });
     }
     static async deleteMailById(id: number){
@@ -79,7 +81,7 @@ export class MailRepository {
             },
         });
     }
-    static async findDraftMailByUserId(userId: number) {
+    static async findDraftMailByUserId(userId: number,skip?:number,take?:number) {
         return await prisma.draftMail.findMany({
             where: {
                 userId: userId,
@@ -90,6 +92,8 @@ export class MailRepository {
                 message: true,
                 sendDate: true,
             },
+            skip:skip,
+            take:take,
         });
     }
     static async deleteDraftMailById(id: number){

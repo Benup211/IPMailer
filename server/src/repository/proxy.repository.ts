@@ -23,7 +23,7 @@ export class ProxyRepository {
             },
         });
     }
-    static async getProxyServers(userId: number) {
+    static async getProxyServers(userId: number,skip?: number,take?: number) {
         return await prisma.proxyServer.findMany({
             where: {
                 userId: userId,
@@ -34,6 +34,8 @@ export class ProxyRepository {
                 port: true,
                 addedAt: true,
             },
+            skip:skip,
+            take:take,
         });
     }
     static async totalProxys(userId: number) {

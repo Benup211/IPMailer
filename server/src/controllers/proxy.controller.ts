@@ -13,9 +13,11 @@ export class ProxyController{
         }
     }
     static async getProxyServers(req:Request,res:Response,next:NextFunction){
+        const take = Number(req.query.take)||3;
+        const skip = Number(req.query.skip)||0;
         try{
             const userId = req.body.userID;
-            const proxy = await ProxyRepository.getProxyServers(userId);
+            const proxy = await ProxyRepository.getProxyServers(userId,skip,take);
             res.status(200).json({proxy});
         }catch(error){
             next(error);

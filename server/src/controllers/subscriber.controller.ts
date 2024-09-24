@@ -5,11 +5,13 @@ import { ResponseService } from '../services';
 export class SubscriberController{
 
     static async getSubscribers(req:Request, res:Response,next:NextFunction){
+        const take = Number(req.query.take) || 3;
+        const skip = Number(req.query.skip) || 0;
         try{
             const userID = req.body.userID;
             const user = await AuthRepository.findUserById(userID);
             if(user){
-                const subscribers = await SubscriberRepository.getSubscribers(userID);
+                const subscribers = await SubscriberRepository.getSubscribers(userID,skip,take);
                 res.status(200).json({subscribers});
             }
             else{

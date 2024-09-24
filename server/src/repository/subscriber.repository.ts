@@ -1,6 +1,6 @@
 import prisma from "../models/prisma.model";
 export class SubscriberRepository {
-    static async getSubscribers(userID: string | number) {
+    static async getSubscribers(userID: string | number,skip?:number,take?:number) {
         return await prisma.subscriber.findMany({
             where: {
                 userId: parseInt(userID.toString()),
@@ -10,6 +10,8 @@ export class SubscriberRepository {
                 email: true,
                 createdAt: true,
             },
+            skip:skip,
+            take:take,
         });
     }
     static async addSubscriber(email: string, userID: string | number) {

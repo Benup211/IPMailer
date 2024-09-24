@@ -78,8 +78,10 @@ export class AdminController {
         }
     }
     static async getAllClients(req: Request, res: Response, next: NextFunction) {
+        const skip = Number(req.query.skip) || 0; 
+        const take = Number(req.query.take) || 5;
         try {
-            const clients = await AuthRepository.allUser();
+            const clients = await AuthRepository.allUser(skip,take);
             res.status(200).json({clients});
         } catch (error) {
             next(error);

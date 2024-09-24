@@ -21,7 +21,7 @@ export class SmtpRepository {
             });
         }
     }
-    static async getSmtpByUserId(userId: number) {
+    static async getSmtpByUserId(userId: number,skip?:number,take?:number) {
         {
             return await prisma.smtpServer.findMany({
                 where: {
@@ -34,6 +34,8 @@ export class SmtpRepository {
                     username: true,
                     addedAt: true,
                 },
+                skip:skip,
+                take:take,
             });
         }
     }

@@ -24,9 +24,11 @@ export class MailController{
         }
     }
     static async getMails(req:Request, res:Response,next:NextFunction){
+        const skip=Number(req.query.skip) || 0;
+        const take=Number(req.query.take) || 3;
         try{
             const userId = req.body.userID;
-            const mails = await MailRepository.findMailByUserId(userId);
+            const mails = await MailRepository.findMailByUserId(userId,skip,take);
             res.status(200).json({mails});
         }catch(error){
             next(error);
@@ -85,9 +87,11 @@ export class MailController{
         }
     }
     static async getDraftMails(req:Request, res:Response,next:NextFunction){
+        const skip=Number(req.query.skip) || 0;
+        const take=Number(req.query.take) || 3;
         try{
             const userId = req.body.userID;
-            const mails = await MailRepository.findDraftMailByUserId(userId);
+            const mails = await MailRepository.findDraftMailByUserId(userId,skip,take);
             res.status(200).json({mails});
         }catch(error){
             next(error);

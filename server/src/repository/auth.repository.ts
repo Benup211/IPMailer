@@ -75,7 +75,7 @@ export class AuthRepository {
             },
         });
     }
-    static async allUser(){
+    static async allUser(skip?:number,take?:number) {
         return await prisma.user.findMany({
             select: {
                 id: true,
@@ -87,6 +87,8 @@ export class AuthRepository {
                 createdAt: true,
                 updatedAt: true,
             },
+            skip:skip,
+            take:take,
         });
     }
     static async blockOrUnblockUser(userId: number, block: boolean) {

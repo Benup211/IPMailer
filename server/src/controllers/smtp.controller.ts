@@ -12,9 +12,11 @@ export class SmtpController{
         }
     }
     static async getSmtpByUserId(req:Request,res:Response,next:NextFunction){
+        const take = Number(req.query.take)||3;
+        const skip = Number(req.query.skip)||0;
         try{
             const userId = req.body.userID;
-            const smtp = await SmtpRepository.getSmtpByUserId(userId);
+            const smtp = await SmtpRepository.getSmtpByUserId(userId,skip,take);
             res.status(200).json({smtp});
         }catch(error){
             next(error);
