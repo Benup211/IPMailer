@@ -10,6 +10,17 @@ export const useSubscriberStore = create<ISubscriberState>((set) => ({
     isGettingSubscribers: false,
     isAddingSubscriber: false,
     isDeletingSubscriber: false,
+    skip: 0,
+    take: 3,
+    selectedPage: 1,
+    setSelectedPage: (page: number) => {
+        set({ selectedPage: page });
+    },
+    setSkip: (page: number) => {
+        set((state) => ({
+            skip: (page - 1) * state.take,
+        }));
+    },
     subscribers: [],
     setSubscribers: (subscriber) => {
         set((state) => ({
@@ -21,6 +32,9 @@ export const useSubscriberStore = create<ISubscriberState>((set) => ({
         try {
             const response = await axios.get(
                 `${API_URL}/subscriber/get-subscribers`
+                ,{
+                    params: { skip: useSubscriberStore.getState().skip, take: useSubscriberStore.getState().take }
+                }
             );
             set({
                 subscribers: response.data.subscribers,

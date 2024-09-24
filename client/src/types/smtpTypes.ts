@@ -11,6 +11,11 @@ export interface ISmtpServerState{
     smtpServers: ISmtpServer[];
     isGettingSmtpServers: boolean;
     seletedSmtpServer:ISmtpServer;
+    skip:number;
+    take:number;
+    selectedPage:number;
+    setSkip:(page:number)=>void;
+    setSelectedPage:(page:number)=>void;
     setSeletedSmtpServer:(id:number)=>void;
     isDeletingSmtp:boolean;
     isUpdatingSmtp:boolean;

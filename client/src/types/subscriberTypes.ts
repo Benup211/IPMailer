@@ -5,6 +5,11 @@ export interface ISubscriber{
 }
 export interface ISubscriberState{
     isGettingSubscribers: boolean;
+    skip: number;
+    take: number;
+    selectedPage: number;
+    setSelectedPage: (page: number) => void;
+    setSkip: (page: number) => void;
     isDeletingSubscriber: boolean;
     isAddingSubscriber: boolean;
     subscribers: ISubscriber[];

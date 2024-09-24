@@ -8,6 +8,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export const useClientStore = create<ICLientState>((set) => ({
     clients: [],
+    skip: 0,
+    take:3,
+    selectedPage: 1,
     isGettingClients: false,
     isDeletingClient: false,
     isCreatingClient: false,
@@ -17,10 +20,20 @@ export const useClientStore = create<ICLientState>((set) => ({
             clients: [...state.clients, ...client],
         }));
     },
+    setSkip: (page:number) => {
+        set((state)=>({
+            skip:(page-1)*state.take
+        }));
+    },
+    setSelectedPage: (page: number) => {
+        set({ selectedPage: page });
+    },
     gettingClients: async () => {
         set({ isGettingClients: true });
         try {
-            const response = await axios.get(`${API_URL}/admin/clients`);
+            const response = await axios.get(`${API_URL}/admin/clients`, {
+                params: { skip: useClientStore.getState().skip, take: useClientStore.getState().take },
+            });
             set({ clients: response.data.clients, isGettingClients: false });
             return response.data.clients;
         } catch (err) {

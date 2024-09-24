@@ -12,6 +12,17 @@ export const useSmtpStore = create<ISmtpServerState>((set) => ({
     isDeletingSmtp:false,
     isUpdatingSmtp:false,
     isCreatingSmtp:false,
+    skip:0,
+    take:3,
+    selectedPage:1,
+    setSkip:(page:number)=>{
+        set((state)=>({
+            skip:(page-1)*state.take
+        }));
+    },
+    setSelectedPage:(page:number)=>{
+        set({selectedPage:page});
+    },
     seletedSmtpServer:{
         id:0,
         host:"",
@@ -28,7 +39,9 @@ export const useSmtpStore = create<ISmtpServerState>((set) => ({
     gettingSmtp:async()=>{
         set({isGettingSmtpServers:true})
         try{
-            const response=await axios.get(`${API_URL}/smtp/get-smtp`);
+            const response=await axios.get(`${API_URL}/smtp/get-smtp`,{
+                params:{skip:useSmtpStore.getState().skip,take:useSmtpStore.getState().take}
+            });
             set({
                 smtpServers:response.data.smtp,
                 isGettingSmtpServers:false

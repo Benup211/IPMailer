@@ -6,14 +6,21 @@ import { IProxyServerProps } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { AuthState } from "../../state/AuthState";
 import { useProxyStore } from "../../state/ProxyState";
+import { Pagination } from "../common/pagination";
 
 export const ProxyTable: FC<IProxyServerProps> = (props): ReactElement => {
     const { proxyServer } = props;
-    const {decreaseStat } = AuthState();
+    const {decreaseStat,stat } = AuthState();
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredProxys, setFilteredProxys] = useState(proxyServer);
-    const {deleteProxyServer}=useProxyStore();
+    const {deleteProxyServer,setSkip,selectedPage,setSelectedPage,gettingProxy,take}=useProxyStore();
+    const totalPage = Math.ceil(stat.proxys / take);
+    const handlePageChange = (page: number) => {
+        setSkip(page);
+        gettingProxy();
+        setSelectedPage(page);
+    }
     useEffect(() => {
         setFilteredProxys(proxyServer);
     }, [proxyServer]);
@@ -140,6 +147,7 @@ export const ProxyTable: FC<IProxyServerProps> = (props): ReactElement => {
                         )}
                     </tbody>
                 </table>
+                {filteredProxys.length>0 && <Pagination currentPage={selectedPage} totalPages={totalPage} onPageChange={handlePageChange}/>}
             </div>
         </motion.div>
     );

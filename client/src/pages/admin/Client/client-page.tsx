@@ -7,7 +7,7 @@ import { StatCard } from "../../../components/common/statcard";
 import { Users } from "lucide-react";
 import { useAdminStore } from "../../../state/AdminState";
 export const ClientPage = () => {
-    const { isGettingClients, gettingClients, clients } = useClientStore();
+    const { isGettingClients, gettingClients, clients} = useClientStore();
     const {admin_stats}=useAdminStore();
     useEffect(() => {
         gettingClients();

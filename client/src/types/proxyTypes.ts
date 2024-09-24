@@ -7,6 +7,11 @@ export interface IProxyServer{
 
 export interface IProxyServerState{
     proxyServers: IProxyServer[];
+    skip:number;
+    take:number;
+    selectedPage:number;
+    setSkip:(page:number)=>void;
+    setSelectedPage:(page:number)=>void;
     isGettingProxyServers: boolean;
     isDeletingProxy:boolean;
     isCreatingProxy:boolean;

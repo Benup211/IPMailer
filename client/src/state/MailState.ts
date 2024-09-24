@@ -11,6 +11,28 @@ export const useMailStore=create<IMailState>((set)=>({
     isAddingMail:false,
     isAddingDraftMail:false,
     isDeletingMail: false,
+    skip:0,
+    take:3,
+    selectedPage:1,
+    setSkip:(page:number)=>{
+        set((state)=>({
+            skip:(page-1)*state.take
+        }));
+    },
+    setSelectedPage:(page:number)=>{
+        set({selectedPage:page});
+    },
+    skipDraft:0,
+    takeDraft:1,
+    selectedPageDraft:1,
+    setSkipDraft:(page:number)=>{
+        set((state)=>({
+            skipDraft:(page-1)*state.takeDraft
+        }));
+    },
+    setSelectedPageDraft:(page:number)=>{
+        set({selectedPageDraft:page});
+    },
     mails:[],
     draftMails:[],
     valueFromDraftMail:{
@@ -28,7 +50,9 @@ export const useMailStore=create<IMailState>((set)=>({
         set({isGettingMails:true});
         try{
             const response=await axios.get(
-                `${API_URL}/mail/get-mails`
+                `${API_URL}/mail/get-mails`,{
+                    params:{skip:useMailStore.getState().skip,take:useMailStore.getState().take}
+                }
             );
             set({
                 mails:response.data.mails,
@@ -94,7 +118,9 @@ export const useMailStore=create<IMailState>((set)=>({
         set({isGettingMails:true});
         try{
             const response=await axios.get(
-                `${API_URL}/mail/get-draft-mails`
+                `${API_URL}/mail/get-draft-mails`,{
+                    params:{skip:useMailStore.getState().skipDraft,take:useMailStore.getState().takeDraft}
+                }
             );
             set({
                 draftMails:response.data.mails,

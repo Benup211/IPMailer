@@ -6,15 +6,22 @@ import { IMails } from "../../types";
 import { useMailStore } from "../../state/MailState";
 import { useNavigate } from "react-router-dom";
 import { AuthState } from "../../state/AuthState";
+import { Pagination } from "../common/pagination";
 
 
 export const DraftMailTable: FC<IMails> = (props): ReactElement => {
     const { mails } = props;
-    const { deleteDraftMail } = useMailStore();
-    const {decreaseStat}=AuthState();
+    const { deleteDraftMail,selectedPageDraft,getDraftMails,takeDraft,setSkipDraft,setSelectedPageDraft } = useMailStore();
+    const {decreaseStat,stat}=AuthState();
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredDraftMails, setFilteredDraftMails] = useState(mails);
     const navigate = useNavigate();
+    const totalPage=Math.ceil(stat.drafts/takeDraft);
+    const handlePageChange = (page: number) => {
+        setSkipDraft(page);
+        getDraftMails();
+        setSelectedPageDraft(page);
+    };
     useEffect(() => {
         setFilteredDraftMails(mails);
     }, [mails]);
@@ -126,6 +133,7 @@ export const DraftMailTable: FC<IMails> = (props): ReactElement => {
                         )}
                     </tbody>
                 </table>
+                {filteredDraftMails.length>0 && <Pagination currentPage={selectedPageDraft} totalPages={totalPage} onPageChange={handlePageChange}/>}
             </div>
         </motion.div>
     );

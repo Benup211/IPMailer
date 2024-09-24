@@ -9,12 +9,25 @@ axios.defaults.withCredentials = true;
 export const useProxyStore = create<IProxyServerState>((set) => ({
     proxyServers: [],
     isGettingProxyServers: false,
+    skip: 0,
+    take: 3,
+    selectedPage: 1,
+    setSkip: (page: number) => {
+        set((state) => ({
+            skip: (page - 1) * state.take,
+        }));
+    },
+    setSelectedPage: (page: number) => {
+        set({ selectedPage: page });
+    },
     isDeletingProxy: false,
     isCreatingProxy: false, 
     gettingProxy: async () => {
         set({ isGettingProxyServers: true });
         try {
-            const response = await axios.get(`${API_URL}/proxy/get-proxy`);
+            const response = await axios.get(`${API_URL}/proxy/get-proxy`,{
+                params: { skip: useProxyStore.getState().skip, take: useProxyStore.getState().take }
+            });
             set({
                 proxyServers: response.data.proxy,
                 isGettingProxyServers: false,

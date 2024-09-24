@@ -8,6 +8,10 @@ export interface IClient{
 }
 export interface ICLientState{
     clients: IClient[];
+    skip: number;
+    take: number;
+    selectedPage: number;
+    setSelectedPage:Function;
     isGettingClients: boolean;
     isDeletingClient:boolean;
     isCreatingClient:boolean;
@@ -17,6 +21,7 @@ export interface ICLientState{
     addClient: Function;
     deleteClient: (id: number) => void;
     blockOrUnblockClient: (id: number, blocked: boolean) => void;
+    setSkip: (page:number) => void;
 }
 
 export interface IClientProps{

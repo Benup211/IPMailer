@@ -6,13 +6,19 @@ import { ISubscribers } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { useSubscriberStore } from "../../state/SubscriberState";
 import { AuthState } from "../../state/AuthState";
+import { Pagination } from "../common/pagination";
 
 export const SubscribersTable: FC<ISubscribers> = (props): ReactElement => {
     const { subscribers } = props;
-    const { deleteSubscriber } = useSubscriberStore();
-    const { user,decreaseStat } = AuthState();
+    const { deleteSubscriber,setSkip,take,getSubscribers,setSelectedPage,selectedPage } = useSubscriberStore();
+    const { user,decreaseStat,stat } = AuthState();
     const navigate = useNavigate();
-
+    const totalPage = Math.ceil(stat.subscribers / take);
+    const handlePageChange = (page: number) => {
+        setSkip(page);
+        getSubscribers();
+        setSelectedPage(page);
+    };
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredSubscribers, setFilteredSubscribers] = useState(subscribers);
 
@@ -143,6 +149,7 @@ export const SubscribersTable: FC<ISubscribers> = (props): ReactElement => {
                         )}
                     </tbody>
                 </table>
+                {filteredSubscribers.length>0 && <Pagination currentPage={selectedPage} totalPages={totalPage} onPageChange={handlePageChange}/>}
             </div>
         </motion.div>
     );

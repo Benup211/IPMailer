@@ -6,14 +6,21 @@ import { ISmtpServerProps } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { AuthState } from "../../state/AuthState";
 import { useSmtpStore } from "../../state/SmtpState";
+import { Pagination } from "../common/pagination";
 
 export const SmtpTable: FC<ISmtpServerProps> = (props): ReactElement => {
     const { smtpServer } = props;
-    const {decreaseStat } = AuthState();
+    const {decreaseStat,stat } = AuthState();
     const navigate = useNavigate();
-    const {deleteSmtpServer,setSeletedSmtpServer}=useSmtpStore();
+    const {deleteSmtpServer,setSeletedSmtpServer,setSkip,selectedPage,setSelectedPage,take,gettingSmtp}=useSmtpStore();
+    const totalPage = Math.ceil(stat.smtps / take);
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredSmtps, setFilteredSmtps] = useState(smtpServer);
+    const handlePageChange = (page: number) => {
+        setSkip(page);
+        gettingSmtp();
+        setSelectedPage(page);
+    };
     useEffect(() => {
         setFilteredSmtps(smtpServer);
     }, [smtpServer]);
@@ -160,6 +167,7 @@ export const SmtpTable: FC<ISmtpServerProps> = (props): ReactElement => {
                         )}
                     </tbody>
                 </table>
+                {filteredSmtps.length>0 && <Pagination currentPage={selectedPage} totalPages={totalPage} onPageChange={handlePageChange}/>}
             </div>
         </motion.div>
     );

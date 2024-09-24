@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Search, Trash2,LogIn, CirclePlus } from "lucide-react";
+import { Search, Trash2, LogIn, CirclePlus } from "lucide-react";
 import { useState, useEffect } from "react";
 import { FC, ReactElement } from "react";
 import { IClientProps } from "../../types";
@@ -7,14 +7,31 @@ import { SwitchComponent } from "../common/switch";
 import { useClientStore } from "../../state/ClientState";
 import { useNavigate } from "react-router-dom";
 import { useAdminStore } from "../../state/AdminState";
+import { Pagination } from "../common/pagination";
 
 export const ClientTable: FC<IClientProps> = (props): ReactElement => {
     const { clients } = props;
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredClients, setFilteredClients] = useState(clients);
-    const {deleteClient,isDeletingClient}=useClientStore();
-    const {decreaseStat,isLoading,loginClient}=useAdminStore();
-    const navigate=useNavigate();
+    const {
+        deleteClient,
+        isDeletingClient,
+        selectedPage,
+        take,
+        setSkip,
+        gettingClients,
+        setSelectedPage,
+    } = useClientStore();
+    const { decreaseStat, isLoading, loginClient, admin_stats } =
+        useAdminStore();
+    const navigate = useNavigate();
+    const totalPage = Math.ceil(admin_stats.clients / take);
+
+    const handlePageChange = (page: number) => {
+        setSkip(page);
+        gettingClients();
+        setSelectedPage(page);
+    };
     useEffect(() => {
         setFilteredClients(clients);
     }, [clients]);
@@ -33,11 +50,11 @@ export const ClientTable: FC<IClientProps> = (props): ReactElement => {
     const addClient = () => {
         navigate("/admin/add-client");
     };
-    const loginToClient = async(id:number|string) => {
-        try{
+    const loginToClient = async (id: number | string) => {
+        try {
             await loginClient(id);
             navigate("/user");
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     };
@@ -45,7 +62,9 @@ export const ClientTable: FC<IClientProps> = (props): ReactElement => {
     const handleDeleteClient = async (id: string | number) => {
         try {
             deleteClient(id as number);
-            setFilteredClients((prev) => prev.filter((client) => client.id !== id));
+            setFilteredClients((prev) =>
+                prev.filter((client) => client.id !== id)
+            );
             decreaseStat("clients");
         } catch (error) {
             console.log(error);
@@ -87,7 +106,7 @@ export const ClientTable: FC<IClientProps> = (props): ReactElement => {
                 </div>
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto overflow-y-auto">
                 <table className="min-w-full divide-y divide-gray-700">
                     <thead>
                         <tr>
@@ -154,7 +173,9 @@ export const ClientTable: FC<IClientProps> = (props): ReactElement => {
                                         <button
                                             className="text-red-400 hover:text-red-300"
                                             onClick={() =>
-                                                handleDeleteClient(clientData.id)
+                                                handleDeleteClient(
+                                                    clientData.id
+                                                )
                                             }
                                             disabled={isDeletingClient}
                                         >
@@ -166,7 +187,6 @@ export const ClientTable: FC<IClientProps> = (props): ReactElement => {
                                                 loginToClient(clientData.id)
                                             }
                                             disabled={isLoading}
-                                            
                                         >
                                             <LogIn size={18} />
                                         </button>
@@ -176,6 +196,13 @@ export const ClientTable: FC<IClientProps> = (props): ReactElement => {
                         )}
                     </tbody>
                 </table>
+                {filteredClients.length > 0 && (
+                    <Pagination
+                        totalPages={totalPage}
+                        currentPage={selectedPage}
+                        onPageChange={handlePageChange}
+                    />
+                )}
             </div>
         </motion.div>
     );
