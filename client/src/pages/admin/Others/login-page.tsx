@@ -7,12 +7,14 @@ import { useNavigate } from "react-router-dom";
 export const AdminLoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const { isLoading, loginAdmin } = useAdminStore();
+    const { isLoading, loginAdmin,checkAdminAuth } = useAdminStore();
     const navigate = useNavigate();
     const handleSignInSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await loginAdmin(username, password);
+            await loginAdmin(username, password).finally(()=>{
+                checkAdminAuth();
+            });
             navigate("/admin/");
         } catch (err) {
             console.log(err);

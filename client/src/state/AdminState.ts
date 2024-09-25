@@ -74,7 +74,6 @@ export const useAdminStore = create<IAdminState>((set) => ({
             set({ isAdminCheckingAuth: false });
         } catch (err) {
             const { response } = err as AxiosError<IErrorResponse>;
-            toast.error(response?.data.errorMessage as string);
             set({ isAdminCheckingAuth: false });
             throw Error(response?.data.errorMessage);
         }

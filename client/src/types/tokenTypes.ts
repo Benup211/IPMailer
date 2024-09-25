@@ -3,4 +3,5 @@ export interface ITokenTypes{
     error:boolean;
     verifyEmail:Function;
     verifyTwoFactor:Function;
+    changePassword:Function;
 }

@@ -16,3 +16,4 @@ export * from './client/Setting/setting-page';
 export * from './admin/Overview/admin-overview-page';
 export * from './admin/Others/login-page';
 export * from './admin/Client/client-page';
+export * from './client/Others/change-password-page';

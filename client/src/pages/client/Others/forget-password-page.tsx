@@ -1,16 +1,25 @@
 import { FC, ReactElement, useState } from "react";
 import Logo from "../../../assets/ipmailer-favicon-color.png";
-import { Link } from "react-router-dom";
-
-export const ForgetPasswordPage:FC=():ReactElement=>{
+import { Link, useNavigate } from "react-router-dom";
+import { AuthState } from "../../../state/AuthState";
+import { Loader } from "lucide-react";
+export const ForgetPasswordPage: FC = (): ReactElement => {
     const [email, setEmail] = useState("");
-    const handleForgetPasswordSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        alert("Forget Password");
-        setEmail("");
-        return;
-    }
-    return(
+    const { isLoading, forgetPassword } = AuthState();
+    const navigate = useNavigate();
+    const handleForgetPasswordSubmit = async (
+        e: React.FormEvent<HTMLFormElement>
+    ) => {
+        try {
+            e.preventDefault();
+            await forgetPassword(email);
+            setEmail("");
+            navigate("/user/login");
+        } catch (err) {
+            console.error(err);
+        }
+    };
+    return (
         <>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 z-10">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -19,14 +28,19 @@ export const ForgetPasswordPage:FC=():ReactElement=>{
                         src={Logo}
                         className="mx-auto h-16 w-16 md:h-20 md:w-20"
                     />
-                    <h1 className="text-center text-2xl font-bold leading-9 tracking-tight text-white-900">IPMailer</h1>
+                    <h1 className="text-center text-2xl font-bold leading-9 tracking-tight text-white-900">
+                        IPMailer
+                    </h1>
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white-900">
                         Forget password?
                     </h2>
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form onSubmit={handleForgetPasswordSubmit} className="space-y-6">
+                    <form
+                        onSubmit={handleForgetPasswordSubmit}
+                        className="space-y-6"
+                    >
                         <div>
                             <label
                                 htmlFor="email"
@@ -52,7 +66,11 @@ export const ForgetPasswordPage:FC=():ReactElement=>{
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                Reset Password
+                                {isLoading ? (
+                                    <Loader className="w-6 h-6 animate-spin  mx-auto" />
+                                ) : (
+                                    "Reset Password"
+                                )}
                             </button>
                         </div>
                     </form>
@@ -69,5 +87,5 @@ export const ForgetPasswordPage:FC=():ReactElement=>{
                 </div>
             </div>
         </>
-    )
-}
+    );
+};

@@ -1,4 +1,4 @@
-import { Routes, Route,useLocation,useNavigate } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import {
     OverviewPage,
     SignInPage,
@@ -15,6 +15,7 @@ import {
     SmtpPage,
     ProxyPage,
     SettingPage,
+    ChangePasswordPage,
 } from "../pages";
 import { AddSmtp } from "../components/smtp/AddSmtp";
 import { UpdateSmtp } from "../components/smtp/UpdateSmtp";
@@ -27,9 +28,9 @@ import Sidebar from "../components/sidebar";
 import { Loader } from "lucide-react";
 import toast from "react-hot-toast";
 
-export const ClientRoute =() => {
+export const ClientRoute = () => {
     const location = useLocation();
-    const { isAuthenticated,checkAuth, isCheckingAuth,user} = AuthState();
+    const { isAuthenticated, checkAuth, isCheckingAuth, user } = AuthState();
     const isMounted = useRef(false);
     const [isAuthChecked, setIsAuthChecked] = useState(false);
     const navigation = useNavigate();
@@ -53,8 +54,8 @@ export const ClientRoute =() => {
             </div>
         );
     }
-    const ProtectedRoute: FC<IRedirectAuthUserProps> =({ children }) => {
-        if(user.blocked){
+    const ProtectedRoute: FC<IRedirectAuthUserProps> = ({ children }) => {
+        if (user.blocked) {
             toast.error("Your account is blocked");
             navigation("/user/logout");
         }
@@ -66,7 +67,7 @@ export const ClientRoute =() => {
     };
 
     const RedirectAuthUser: FC<IRedirectAuthUserProps> = ({ children }) => {
-        if(user.blocked){
+        if (user.blocked) {
             toast.error("Your account is blocked");
             navigation("/user/logout");
         }
@@ -115,6 +116,14 @@ export const ClientRoute =() => {
                     element={
                         <RedirectAuthUser>
                             <VerificationPage />
+                        </RedirectAuthUser>
+                    }
+                />
+                <Route
+                    path="/reset-password/:changePasswordToken"
+                    element={
+                        <RedirectAuthUser>
+                            <ChangePasswordPage />
                         </RedirectAuthUser>
                     }
                 />

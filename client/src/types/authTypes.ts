@@ -28,4 +28,8 @@ export interface IAuthState{
     checkAuth:()=>Promise<any>;
     increaseStat:Function;
     decreaseStat:Function;
+    forgetPassword:Function;
+    changePassword:Function;
+    deleteUser:Function;
 }
+export type UserProps = User;

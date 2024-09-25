@@ -35,5 +35,19 @@ export const TokenState=create<ITokenTypes>((set)=>({
             toast.error(response?.data.errorMessage as string);
             throw Error(response?.data.errorMessage);
         }
+    },
+    changePassword:async (password:string,confirmPassword:string,token:string)=>{
+        set({isLoading:true});
+        try{
+            const response=await axios.post(`${API_URL}/token//verify-reset-password/${token}`,{password,confirmPassword});
+            toast.success('Password Changed Successfully');
+            set({isLoading:false});
+            return response;
+        }catch(err){
+            const {response}=err as AxiosError<IErrorResponse>;
+            set({isLoading:false});
+            toast.error(response?.data.errorMessage as string);
+            throw Error(response?.data.errorMessage);
+        }
     }
 }));

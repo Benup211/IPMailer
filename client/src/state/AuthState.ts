@@ -10,7 +10,7 @@ export const AuthState = create<IAuthState>((set) => ({
         id: "",
         email: "",
         organization: "",
-        apiKey:"",
+        apiKey: "",
         active: false,
         blocked: false,
         createdAt: new Date(),
@@ -76,16 +76,20 @@ export const AuthState = create<IAuthState>((set) => ({
         set({ isLoading: true });
         try {
             const response = await axios.get(`${API_URL}/auth/logout`);
-            set({ isLoading: false, isAuthenticated: false, user: {
-                id: "",
-                email: "",
-                organization: "",
-                apiKey:"",
-                active: false,
-                blocked: false,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            } });
+            set({
+                isLoading: false,
+                isAuthenticated: false,
+                user: {
+                    id: "",
+                    email: "",
+                    organization: "",
+                    apiKey: "",
+                    active: false,
+                    blocked: false,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            });
             toast.success(response.data.message);
             return response;
         } catch (err) {
@@ -133,5 +137,71 @@ export const AuthState = create<IAuthState>((set) => ({
                 return state;
             }
         });
+    },
+    forgetPassword: async (email: string) => {
+        set({ isLoading: true });
+        try {
+            const response = await axios.post(
+                `${API_URL}/auth/reset-password`,
+                {
+                    email,
+                }
+            );
+            set({ isLoading: false });
+            toast.success(response.data.message);
+            return response;
+        } catch (err) {
+            const { response } = err as AxiosError<IErrorResponse>;
+            set({ isLoading: false });
+            toast.error(response?.data.errorMessage as string);
+            throw Error(response?.data.errorMessage);
+        }
+    },
+    changePassword: async (password: string, confirmPassword: string) => {
+        set({ isLoading: true });
+        try {
+            const response = await axios.post(
+                `${API_URL}/auth/change-password`,
+                {
+                    password,
+                    confirmPassword,
+                }
+            );
+            set({ isLoading: false });
+            toast.success(response.data.message);
+            return response;
+        } catch (err) {
+            const { response } = err as AxiosError<IErrorResponse>;
+            set({ isLoading: false });
+            toast.error(response?.data.errorMessage as string);
+            throw Error(response?.data.errorMessage);
+        }
+    },
+    deleteUser: async () => {
+        set({ isLoading: true });
+        try {
+            const response = await axios.delete(`${API_URL}/auth/delete-user`);
+            set({
+                isLoading: false,
+                isAuthenticated: false,
+                user: {
+                    id: "",
+                    email: "",
+                    organization: "",
+                    apiKey: "",
+                    active: false,
+                    blocked: false,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            });
+            toast.success(response.data.message);
+            return response;
+        } catch (err) {
+            const { response } = err as AxiosError<IErrorResponse>;
+            set({ isLoading: false });
+            toast.error(response?.data.errorMessage as string);
+            throw Error(response?.data.errorMessage);
+        }
     },
 }));
