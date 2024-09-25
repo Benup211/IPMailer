@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthRepository, TokenRepository,SubscriberRepository,MailRepository,SmtpRepository,ProxyRepository } from "../repository/";
 import { ResponseService, UserService } from "../services";
-import { sendVerifyMail, sendTwoFACode } from "../services/mail.service";
+import { sendVerifyMail, sendTwoFACode,sendResetPasswordLink } from "../services/mail.service";
 import { ETokenType } from "../types";
 export class AuthController {
     static async registerUser(req: Request, res: Response, next: NextFunction) {
@@ -105,6 +105,19 @@ export class AuthController {
             next(error);
         }
     }
+    static async deleteUser(req:Request,res:Response,next:NextFunction){
+        try {
+            const user = await AuthRepository.findUserById(req.body.userID);
+            if(!user){
+                next(ResponseService.CreateErrorResponse("User not found",404));
+            }
+            await AuthRepository.deleteUser(req.body.userID);
+            res.clearCookie("Token");
+            return res.status(200).json({message:"User deleted successfully"});
+        } catch (error) {
+            next(error);
+        }
+    }
     static async getUser(req: Request, res: Response, next: NextFunction) {
         try {
             const user = await AuthRepository.findUserById(req.body.userID);
@@ -120,6 +133,37 @@ export class AuthController {
             const stat = { subscribers, drafts, mails, smtps, proxys };
             return res.status(200).json({user,stat});
         } catch (error) {
+            next(error);
+        }
+    }
+    static async resetPassowrdLink(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { email } = req.body;
+            const user = await AuthRepository.findUserByEmail(email);
+            if (!user) {
+                next(ResponseService.CreateErrorResponse("User not found", 404));
+            }
+            const token = await TokenRepository.createToken(
+                user?.id as number,
+                ETokenType.PASSWORD_RESET
+            );
+            sendResetPasswordLink(user?.email as string, token.id);
+            return res.status(200).json({ message: "Reset password link sent" });
+        } catch (error) {
+            next(error);
+        }
+    }
+    static async changePassword(req: Request, res: Response, next: NextFunction) {
+        try{
+            const {password}=req.body;
+            const user = await AuthRepository.findUserById(req.body.userID);
+            if(!user){
+                next(ResponseService.CreateErrorResponse("User not found",404));
+            }
+            const hashedPassword = await UserService.hashPassword(password);
+            await AuthRepository.updateUserPassword(user?.id as number,hashedPassword);
+            return res.status(200).json({message:"Password changed successfully"});
+        }catch(error){
             next(error);
         }
     }

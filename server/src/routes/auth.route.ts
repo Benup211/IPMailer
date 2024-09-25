@@ -7,6 +7,7 @@ class AuthRoute{
     constructor(){
         this.getRoutes();
         this.postRoutes();
+        this.deleteRoutes();
     }
     getRoutes(){
         this.router.get('/logout',AuthController.logoutUser);
@@ -15,6 +16,11 @@ class AuthRoute{
     postRoutes(){
         this.router.post('/register',AuthValidator.registerUser(),GlobalMiddleware.CheckValidationResult,AuthController.registerUser);
         this.router.post('/login',AuthValidator.loginUser(),GlobalMiddleware.CheckValidationResult,AuthController.loginUser);
+        this.router.post('/reset-password',AuthValidator.resetPassword(),GlobalMiddleware.CheckValidationResult,AuthController.resetPassowrdLink);
+        this.router.post('/change-password',AuthValidator.changePassword(),GlobalMiddleware.CheckValidationResult,GlobalMiddleware.CheckAuth,AuthController.changePassword);
+    }
+    deleteRoutes(){
+        this.router.delete('/delete-user',GlobalMiddleware.CheckAuth,AuthController.deleteUser);
     }
 }
 export default new AuthRoute().router;

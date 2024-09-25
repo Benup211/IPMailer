@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import dotenv from 'dotenv';
 dotenv.config();
-import { WELCOME_EMAIL_AND_VERIFY_TEMPLATE,TWO_FA_CODE_TEMPLATE } from "./email.template";
+import { WELCOME_EMAIL_AND_VERIFY_TEMPLATE,TWO_FA_CODE_TEMPLATE,ADMIN_REGISTER_WELCOME_TEMPLATE,RESET_PASSWORD_TEMPLATE } from "./email.template";
 import {ISmtpForMail,IProxyForMail,ISubscriber} from '../types';
 
 const verification_link = process.env.OriginURL as string;
@@ -28,6 +28,36 @@ export const sendVerifyMail = async (to: string,verification_id: string) => {
         console.log("error in sending mail", error);
     }
 };
+
+export const sendResetPasswordLink = async (to: string,verification_id: string) => {
+    try {
+        await transporter.sendMail({
+            from:  process.env.SMTP_USER,
+            to: to,
+            subject: "Verify your email",
+            html: RESET_PASSWORD_TEMPLATE.replace("{reset_password_link}", `${verification_link}/user/reset-password/${verification_id}`),
+        });
+    } catch (error) {
+        console.log("error in sending mail", error);
+    }
+};
+
+export const sendAdminRegisterMail=async(to:string,password:string)=>{
+    try {
+        await transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to: to,
+            subject: "Your Account has been created",
+            html: ADMIN_REGISTER_WELCOME_TEMPLATE
+            .replace("{user_email}", to)
+            .replace("{user_password}", password)
+            .replace("{login_link}", `${verification_link}/user/login`),
+        });
+    } catch (error) {
+        console.log("error in sending mail", error);
+    }
+}
+
 export const sendTwoFACode = async (to: string,code: string) => {
     try {
         await transporter.sendMail({

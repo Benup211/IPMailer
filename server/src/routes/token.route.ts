@@ -14,6 +14,7 @@ class TokenRoute{
     }
     postRoutes(){
         this.router.post('/verify-two-factor',TokenValidator.verifyTwoFactor(),GlobalMiddleware.CheckValidationResult,TokenController.verifyTwoFactor);
+        this.router.post('/verify-reset-password/:verification_id',TokenValidator.verifyResetPassword(),GlobalMiddleware.CheckValidationResult,TokenController.verifyResetPassword);
     }
 }
 

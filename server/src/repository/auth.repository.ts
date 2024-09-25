@@ -130,4 +130,24 @@ export class AuthRepository {
             },
         });
     }
+    static async changePassword(userId: number, password: string) {
+        return await prisma.user.update({
+            where: {
+                id: userId,
+            },
+            data: {
+                password: password,
+            },
+        });
+    }
+    static async updateUserPassword(userId: number, password: string) {
+        return await prisma.user.update({
+            where: {
+                id: userId,
+            },
+            data: {
+                password: password,
+            },
+        });
+    }
 }

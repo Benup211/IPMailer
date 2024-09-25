@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { AdminRepository,AuthRepository } from "../repository/";
 import { ResponseService, UserService, JwtService } from "../services";
+import {sendAdminRegisterMail} from '../services/mail.service';
 import dotenv from "dotenv";
 dotenv.config();
 export class AdminController {
@@ -127,6 +128,7 @@ export class AdminController {
                 active,
                 hashedPassword
             );
+            sendAdminRegisterMail(client.email,password);
             res.status(201).json(client);
         } catch (error) {
             next(error);
