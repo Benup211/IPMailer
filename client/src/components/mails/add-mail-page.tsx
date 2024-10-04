@@ -1,42 +1,57 @@
 import { motion } from "framer-motion";
 import { Header } from "../common/header";
 import { Link } from "react-router-dom";
-import { Loader, Send,SquarePen } from "lucide-react";
+import { Loader, Send, SquarePen } from "lucide-react";
 import { useState } from "react";
 import { useMailStore } from "../../state/MailState";
 import { useNavigate } from "react-router-dom";
 import { AuthState } from "../../state/AuthState";
+import { RichTextField } from "../common/richtextfield";
 export const MakeMailPage = () => {
-    const {increaseStat}=AuthState();
-    const {isAddingMail,addMail,addDraftMail,isAddingDraftMail,valueFromDraftMail}=useMailStore();
+    const { increaseStat } = AuthState();
+    const {
+        isAddingMail,
+        addMail,
+        addDraftMail,
+        isAddingDraftMail,
+        valueFromDraftMail,
+    } = useMailStore();
     const [mailSubject, setMailSubject] = useState(valueFromDraftMail.subject);
     const [mailBody, setMailBody] = useState(valueFromDraftMail.message);
-    const navigate=useNavigate();
-    const handleMailSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
+    const navigate = useNavigate();
+    const handleMailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
     };
-    const handleSendMail=async()=>{
+    const handleSendMail = async () => {
         try {
-            await addMail(mailSubject,mailBody);
+            if (mailSubject === "" || mailBody === "") {
+                alert("Please fill all fields");
+                return;
+            }
+            await addMail(mailSubject, mailBody);
             setMailSubject("");
             setMailBody("");
-            increaseStat('mails');
+            increaseStat("mails");
             navigate("/user/send-mail");
         } catch (error) {
             console.log(error);
         }
-    }
-    const handleDraftMail=async()=>{
+    };
+    const handleDraftMail = async () => {
         try {
-            await addDraftMail(mailSubject,mailBody);
+            if (mailSubject === "" || mailBody === "") {
+                alert("Please fill all fields");
+                return;
+            }
+            await addDraftMail(mailSubject, mailBody);
             setMailSubject("");
             setMailBody("");
-            increaseStat('drafts');
+            increaseStat("drafts");
             navigate("/user/draft-mail");
         } catch (error) {
             console.log(error);
         }
-    }
+    };
     return (
         <div className="flex-1 overflow-auto relative z-10">
             <Header title="Send Mail" />
@@ -80,20 +95,7 @@ export const MakeMailPage = () => {
                             >
                                 Message
                             </label>
-                            <div className="my-2">
-                                <textarea
-                                    id="Message"
-                                    name="Message"
-                                    required
-                                    onChange={(e) =>
-                                        setMailBody(e.target.value)
-                                    }
-                                    placeholder="Mail Message"
-                                    value={mailBody as string}
-                                    disabled={isAddingMail || isAddingDraftMail}
-                                    className="block w-full rounded-md border-0 p-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 md:min-w-96 min-w-64   "
-                                />
-                            </div>
+                            <RichTextField setMessage={setMailBody} data={mailBody} />
                         </div>
                         <div className="flex gap-1">
                             <button

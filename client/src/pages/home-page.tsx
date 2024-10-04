@@ -1,26 +1,7 @@
-import { useState } from "react";
 import Logo from "../assets/ipmailer-favicon-color.png";
 import { Link } from "react-router-dom";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import {
-    ClassicEditor,
-    Bold,
-    Essentials,
-    Heading,
-    Indent,
-    IndentBlock,
-    Italic,
-    List,
-    MediaEmbed,
-    Paragraph,
-    Table,
-    Undo,
-    ImageUpload
-} from "ckeditor5";
 
-import "ckeditor5/ckeditor5.css";
 export const HomePage = () => {
-    const [value, setValue] = useState("");
 
     return (
         <div className="z-10 flex flex-col items-center justify-start w-screen overflow-y-auto">
@@ -59,49 +40,6 @@ export const HomePage = () => {
                     </p>
                 </div>
             </div>
-            <CKEditor
-                onChange={(event, editor) => {
-                    const data = editor.getData();
-                    setValue(data);
-                }}
-                editor={ClassicEditor}
-                config={{
-                    toolbar: [
-                        "undo",
-                        "redo",
-                        "|",
-                        "heading",
-                        "|",
-                        "bold",
-                        "italic",
-                        "|",
-                        "link",
-                        "insertTable",
-                        "mediaEmbed",
-                        "|",
-                        "bulletedList",
-                        "numberedList",
-                        "indent",
-                        "outdent",
-                    ],
-                    plugins: [
-                        Bold,
-                        Essentials,
-                        Heading,
-                        Indent,
-                        IndentBlock,
-                        Italic,
-                        List,
-                        MediaEmbed,
-                        Paragraph,
-                        Table,
-                        Undo,
-                        ImageUpload
-                    ],
-                    initialData: "<h1>Hello from CKEditor 5!</h1>",
-                }}
-            />
-            <div>{value}</div>
         </div>
     );
 };

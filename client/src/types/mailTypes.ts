@@ -1,7 +1,7 @@
 export interface IMail{
     id: string|number;
-    subject: String;
-    message:String;
+    subject: string;
+    message:string;
     sendDate: Date;
 }
 export interface IMailState{
