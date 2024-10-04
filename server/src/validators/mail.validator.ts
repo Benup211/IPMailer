@@ -6,7 +6,7 @@ export class MailValidator{
             body("subject")
             .notEmpty()
             .withMessage("Subject is required")
-            .isLength({max: 20})
+            .isLength({max: 200})
             .withMessage("Subject must be less than 20 characters"),
             body("message")
             .notEmpty()

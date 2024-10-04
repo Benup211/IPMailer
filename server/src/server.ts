@@ -10,6 +10,7 @@ import MailRoute from "./routes/mail.route";
 import SmtpRoute from "./routes/smtp.route";
 import ProxyRoute from "./routes/proxy.route";
 import AdminRoute from "./routes/admin.route";
+import uploadRoute from "./routes/upload.route";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -28,33 +29,34 @@ export class MainServer {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cookieParser());
         this.app.use(bodyParser.json());
-
-        this.app.use((req: Request, res: Response, next: NextFunction) => {
-            if (req.path === "/api/subscriber/add-subscriber") {
-                res.header("Access-Control-Allow-Origin", req.headers.origin as string);
-                res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-                res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-                res.header("Access-Control-Allow-Credentials", "true");
-                next();
-            } else {
-                const allowedOrigins = [
-                    "http://localhost:5174",
-                    "http://localhost:5173",
-                    "https://unique-squirrel-enormously.ngrok-free.app",
-                    "http://localhost:3001",
-                    process.env.OriginURL as string,
-                ];
-                const origin = req.headers.origin as string;
-                if (allowedOrigins.includes(origin)) {
-                    res.header("Access-Control-Allow-Origin", origin);
-                    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-                    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-                    res.header("Access-Control-Allow-Credentials", "true");
-                    next();
-                } else {
-                    res.status(403).json({ message: "Origin not allowed" });
-                };
-            }});
+        this.app.use(express.static("public"));
+        // this.app.use((req: Request, res: Response, next: NextFunction) => {
+        //     if (req.path === "/api/subscriber/add-subscriber") {
+        //         res.header("Access-Control-Allow-Origin", req.headers.origin as string);
+        //         res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+        //         res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        //         res.header("Access-Control-Allow-Credentials", "true");
+        //         next();
+        //     } else {
+        //         const allowedOrigins = [
+        //             "http://localhost:5174",
+        //             "http://localhost:5173",
+        //             "https://unique-squirrel-enormously.ngrok-free.app",
+        //             "http://localhost:3001",
+        //             process.env.OriginURL as string,
+        //         ];
+        //         const origin = req.headers.origin as string;
+        //         if (allowedOrigins.includes(origin)) {
+        //             res.header("Access-Control-Allow-Origin", origin);
+        //             res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+        //             res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        //             res.header("Access-Control-Allow-Credentials", "true");
+        //             next();
+        //         } else {
+        //             res.status(403).json({ message: "Origin not allowed" });
+        //         };
+        //     }});
+        this.app.use(cors());
     }
 
     setRoutes() {
@@ -65,6 +67,7 @@ export class MainServer {
         this.app.use("/api/smtp", SmtpRoute);
         this.app.use("/api/proxy", ProxyRoute);
         this.app.use("/api/admin", AdminRoute);
+        this.app.use('/api/file_upload', uploadRoute);
     }
 
     handle404Error() {
@@ -75,6 +78,9 @@ export class MainServer {
                 errorMessage: "Not Found",
             });
         });
+    }
+
+    handlePublicFiles(){
     }
 
     handleClientError() {
