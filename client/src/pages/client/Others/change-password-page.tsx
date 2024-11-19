@@ -55,6 +55,7 @@ export const ChangePasswordPage: FC = (): ReactElement => {
                                     id="password"
                                     name="password"
                                     type="password"
+                                    placeholder='Your new password'
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -73,6 +74,7 @@ export const ChangePasswordPage: FC = (): ReactElement => {
                                 <input
                                     id="confirmPassword"
                                     name="confirmPassword"
+                                    placeholder='Confirm password'
                                     type="password"
                                     required
                                     value={confirmPassword}

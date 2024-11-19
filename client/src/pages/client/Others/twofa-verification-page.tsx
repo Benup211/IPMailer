@@ -57,6 +57,7 @@ export const TwoFAVerificationPage: FC = (): ReactElement => {
                                     id="2facode"
                                     name="2facode"
                                     type="text"
+                                    placeholder="Enter 2FA code"
                                     required
                                     value={code}
                                     onChange={(e) => setCode(e.target.value)}

@@ -25,6 +25,7 @@ export class SubscriberController{
     static async addSubscriber(req:Request, res:Response,next:NextFunction){
         try{
             const {email,apiKey} = req.body;
+            console.log(email,apiKey)
             const user = await AuthRepository.findUserByApiKey(apiKey);
             if(user){
                 const findSubscriberExist=await SubscriberRepository.findSubscriberByEmail(email);

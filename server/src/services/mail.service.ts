@@ -34,7 +34,7 @@ export const sendResetPasswordLink = async (to: string,verification_id: string) 
         await transporter.sendMail({
             from:  process.env.SMTP_USER,
             to: to,
-            subject: "Verify your email",
+            subject: "Reset Password OF IPMailer",
             html: RESET_PASSWORD_TEMPLATE.replace("{reset_password_link}", `${verification_link}/user/reset-password/${verification_id}`),
         });
     } catch (error) {

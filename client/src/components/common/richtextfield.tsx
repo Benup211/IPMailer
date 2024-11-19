@@ -95,7 +95,6 @@ export const RichTextField = ({ setMessage,data }: { data:string,setMessage: Fun
                     },
                 }}
             />
-            <p>{data}</p>
         </div>
     );
 };

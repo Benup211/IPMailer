@@ -53,6 +53,7 @@ export const ForgetPasswordPage: FC = (): ReactElement => {
                                     id="email"
                                     name="email"
                                     type="email"
+                                    placeholder="Your email address"
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}

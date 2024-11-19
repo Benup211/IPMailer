@@ -30,33 +30,32 @@ export class MainServer {
         this.app.use(cookieParser());
         this.app.use(bodyParser.json());
         this.app.use(express.static("public"));
-        // this.app.use((req: Request, res: Response, next: NextFunction) => {
-        //     if (req.path === "/api/subscriber/add-subscriber") {
-        //         res.header("Access-Control-Allow-Origin", req.headers.origin as string);
-        //         res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-        //         res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        //         res.header("Access-Control-Allow-Credentials", "true");
-        //         next();
-        //     } else {
-        //         const allowedOrigins = [
-        //             "http://localhost:5174",
-        //             "http://localhost:5173",
-        //             "https://unique-squirrel-enormously.ngrok-free.app",
-        //             "http://localhost:3001",
-        //             process.env.OriginURL as string,
-        //         ];
-        //         const origin = req.headers.origin as string;
-        //         if (allowedOrigins.includes(origin)) {
-        //             res.header("Access-Control-Allow-Origin", origin);
-        //             res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-        //             res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        //             res.header("Access-Control-Allow-Credentials", "true");
-        //             next();
-        //         } else {
-        //             res.status(403).json({ message: "Origin not allowed" });
-        //         };
-        //     }});
-        this.app.use(cors());
+        this.app.use((req: Request, res: Response, next: NextFunction) => {
+            if (req.path === "/api/subscriber/add-subscriber") {
+                res.header("Access-Control-Allow-Origin", req.headers.origin as string);
+                res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+                res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+                res.header("Access-Control-Allow-Credentials", "true");
+                next();
+            } else {
+                const allowedOrigins = [
+                    "http://localhost:5174",
+                    "http://localhost:5173",
+                    "https://unique-squirrel-enormously.ngrok-free.app",
+                    "http://localhost:3001",
+                    process.env.OriginURL as string,
+                ];
+                const origin = req.headers.origin as string;
+                if (allowedOrigins.includes(origin)) {
+                    res.header("Access-Control-Allow-Origin", origin);
+                    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+                    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+                    res.header("Access-Control-Allow-Credentials", "true");
+                    next();
+                } else {
+                    res.status(403).json({ message: "Origin not allowed" });
+                };
+            }});
     }
 
     setRoutes() {

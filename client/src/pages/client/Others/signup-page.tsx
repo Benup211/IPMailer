@@ -29,7 +29,7 @@ export const SignUpPage: FC = (): ReactElement => {
 
     return (
         <>
-            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 z-10">
+            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 z-10 overflow-auto">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
                         alt="IPMailer"
@@ -55,6 +55,7 @@ export const SignUpPage: FC = (): ReactElement => {
                                     id="email"
                                     name="email"
                                     type="email"
+                                    placeholder="Your email address"
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -101,6 +102,7 @@ export const SignUpPage: FC = (): ReactElement => {
                                     name="password"
                                     type="password"
                                     required
+                                    placeholder="Password"
                                     value={password}
                                     onChange={(e) =>
                                         setPassword(e.target.value)
@@ -122,6 +124,7 @@ export const SignUpPage: FC = (): ReactElement => {
                                     id="confirm_password"
                                     name="confirm_password"
                                     type="password"
+                                    placeholder="Confirm Password"
                                     required
                                     value={confirmPassword}
                                     onChange={(e) =>

@@ -61,6 +61,7 @@ export const SignInPage: FC = (): ReactElement => {
                                     id="email"
                                     name="email"
                                     type="email"
+                                    placeholder="Your email address"
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -93,6 +94,7 @@ export const SignInPage: FC = (): ReactElement => {
                                     id="password"
                                     name="password"
                                     type="password"
+                                    placeholder="Password"
                                     required
                                     value={password}
                                     onChange={(e) =>
