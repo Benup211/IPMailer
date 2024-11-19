@@ -30,7 +30,7 @@ export const RichTextField = ({ setMessage,data }: { data:string,setMessage: Fun
     return (
         <div className="text-black mb-2 max-w-80 md:min-w-[500px]">
             <CKEditor
-                onChange={(event, editor) => {
+                onChange={(_event, editor) => {
                     const data = editor.getData();
                     setMessage(data);
                 }}
