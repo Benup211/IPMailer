@@ -11,7 +11,7 @@ export const FeaturePage=()=>{
                 Features
             </h2>
             <div className="container px-6 flex flex-col flex-wrap md:flex-row justify-evenly items-center gap-2 p-10">
-                <div className="my-1 w-[100%] md:w-[49%] flex flex-col justify-center items-center h-auto gap-2 bg-gray-950 p-10 hover:bg-gray-900">
+                <div className="my-1 w-[100%] md:w-[49%] flex flex-col justify-center items-center h-auto lg:max-h-75 gap-2 bg-gray-950 p-10 hover:bg-gray-900">
                     <Server size={60} color="#8B5CF6" />
                     <h3 className="font-mono font-semibold text-sm">
                         Custom Smtp Server
@@ -22,7 +22,7 @@ export const FeaturePage=()=>{
                         rotation.
                     </p>
                 </div>
-                <div className="my-1 w-[100%] md:w-[49%] flex flex-col justify-center items-center h-auto gap-2 bg-gray-950 p-10 hover:bg-gray-900">
+                <div className="my-1 w-[100%] md:w-[49%] flex flex-col justify-center items-center h-auto lg:max-h-75 gap-2 bg-gray-950 p-10 hover:bg-gray-900">
                     <ServerCog size={60} color="#EC4899" />
                     <h3 className="font-mono font-semibold text-sm">
                         Custom Proxy Server
@@ -33,7 +33,7 @@ export const FeaturePage=()=>{
                         over email communications.
                     </p>
                 </div>
-                <div className="my-1 w-[100%] md:w-[49%] flex flex-col justify-center items-center h-auto gap-2 bg-gray-950 p-10 hover:bg-gray-900">
+                <div className="my-1 w-[100%] md:w-[49%] flex flex-col justify-center items-center h-auto lg:max-h-75 gap-2 bg-gray-950 p-10 hover:bg-gray-900">
                     <Mail size={60} color="#10B981" />
                     <h3 className="font-mono font-semibold text-sm">
                         Rich Textfield Mail
@@ -44,15 +44,14 @@ export const FeaturePage=()=>{
                         links for better engagement.
                     </p>
                 </div>
-                <div className="my-1 w-[100%] md:w-[49%] flex flex-col justify-center items-center h-auto gap-2 bg-gray-950 p-10 hover:bg-gray-900">
+                <div className="my-1 w-[100%] md:w-[49%] flex flex-col justify-center items-center h-auto lg:max-h-75 gap-2 bg-gray-950 p-10 hover:bg-gray-900">
                     <Webhook size={60} color="#3B82F6" />
                     <h3 className="font-mono font-semibold text-sm">
                         Subscribering API'S
                     </h3>
                     <p className="lg:w-[40%] text-xs md:text-sm font-mono text-center">
                         Subscriber API allows organizations to easily add new
-                        contacts to their subscriber list improving audience
-                        management and email targeting.
+                        contacts to their subscriber list improving email targeting.
                     </p>
                 </div>
             </div>

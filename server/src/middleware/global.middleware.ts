@@ -6,7 +6,6 @@ export class GlobalMiddleware{
     static CheckValidationResult(req: any, res: any, next: any){
         const error=validationResult(req);
         if(!error.isEmpty()){
-            console.log("error")
             next(ResponseService.CreateErrorResponse(error.array()[0].msg,400));
         }
         next();

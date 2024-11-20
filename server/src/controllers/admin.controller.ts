@@ -8,7 +8,6 @@ export class AdminController {
     static async loginAdmin(req: Request, res: Response, next: NextFunction) {
         try {
             const { username, password } = req.body;
-            console.log(username, password);
             const admin = await AdminRepository.findAdmin();
             if (!admin) {
                 const usernameFromEnv = process.env.ADMIN_USERNAME as string;
